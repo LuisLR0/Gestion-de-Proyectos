@@ -1,1 +1,17 @@
 @import "tailwindcss";
+@plugin "tailwind-scrollbar";
+
+@layer components {
+
+    .inputStyle {
+        @apply  p-2 font-medium w-full outline-0 border-b-3;
+    }
+
+    .buttonNav {
+        @apply flex flex-col items-center font-semibold cursor-pointer select-none;
+    }
+
+    .styleColumnas {
+        @apply h-[45rem] w-[19rem] md:w-[22rem] max-w-[20rem] bg-blue-800 rounded-xl flex flex-col gap-5 p-5;
+    }
+}

@@ -5,9 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion de Proyectos</title>
+    <title>{% block Titulo %} {% endblock Titulo %}</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
-<body>
+<body class="bg-blue-950 h-screen">
+    {% block Contenido %}
+    {% endblock Contenido %}
 </body>
 </html>
