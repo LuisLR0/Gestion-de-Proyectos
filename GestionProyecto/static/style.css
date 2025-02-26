@@ -648,6 +648,24 @@
     -webkit-user-select: none;
     user-select: none;
   }
+  .scrollbar-thumb-blue-500 {
+    --scrollbar-thumb: oklch(0.623 0.214 259.815);
+  }
+  .scrollbar-thumb-blue-600 {
+    --scrollbar-thumb: oklch(0.546 0.245 262.881);
+  }
+  .scrollbar-thumb-blue-800 {
+    --scrollbar-thumb: oklch(0.424 0.199 265.638);
+  }
+  .scrollbar-thumb-blue-800\/50 {
+    --scrollbar-thumb: color-mix(in oklab, oklch(0.424 0.199 265.638) 50%, transparent);
+  }
+  .scrollbar-thumb-blue-900 {
+    --scrollbar-thumb: oklch(0.379 0.146 265.522);
+  }
+  .scrollbar-thumb-blue-900\/50 {
+    --scrollbar-thumb: color-mix(in oklab, oklch(0.379 0.146 265.522) 50%, transparent);
+  }
   .scrollbar-thumb-gray-700 {
     --scrollbar-thumb: oklch(0.373 0.034 259.733);
   }
