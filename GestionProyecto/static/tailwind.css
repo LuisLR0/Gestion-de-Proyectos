@@ -14,4 +14,8 @@
     .styleColumnas {
         @apply h-[45rem] w-[19rem] md:w-[22rem] max-w-[20rem] bg-blue-800 rounded-xl flex flex-col gap-5 p-5;
     }
+
+    .botonStyle {
+        @apply bg-blue-600 hover:bg-blue-500 cursor-pointer rounded-md p-2 text-lg font-semibold w-50;
+    }
 }

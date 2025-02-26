@@ -1,4 +1,5 @@
 {% extends "index.html" %}
+{% load static %}
 
 {% block Titulo %}Proyecto{% endblock Titulo %}
 
@@ -8,53 +9,31 @@
             
             <div class="flex items-center gap-2 ml-3">
                 <input type="checkbox" id="menuHambur" class="peer/menu hidden">
-                <label for="menuHambur" class="bg-blue-300 w-10 h-10 cursor-pointer peer-checked/menu:bg-amber-800 md:hidden"></label>
+                <label for="menuHambur" onclick="closeScrollModals()" class="w-10 h-10 cursor-pointer peer-checked/menu:bg-amber-800 md:hidden">
+                    <svg viewBox="0 0 28 28" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 7a1 1 0 0 1 1-1h19a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 7a1 1 0 0 1 1-1h11a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m1 6a1 1 0 1 0 0 2h17a1 1 0 1 0 0-2z"/>
+                    </svg>
+                </label>
 
-                <label for="menuHambur" class="h-10 w-10 cursor-pointer peer-checked/menu:fixed z-99 hidden peer-checked/menu:block md:hidden">
-                    <svg fill="#fff" class="w-3 h-3 object-cover" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.56 41.56">
+                <label for="menuHambur" onclick="openScrollModals()" class="h-7 w-7 cursor-pointer peer-checked/menu:fixed z-99 hidden peer-checked/menu:block md:hidden">
+                    <svg fill="#fff" class="object-cover" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.56 41.56">
                         <path d="M36.37 0 20.78 15.58 5.19 0 0 5.19l15.58 15.59L0 36.36l5.19 5.2L20.78 26l15.59 15.56 5.19-5.2L26 20.78 41.56 5.19Z"/>
                     </svg>                      
                 </label>
 
                 <div class="hidden peer-checked/menu:block fixed md:block top-0 left-0 w-screen md:w-30 h-full bg-black/40">
+
                     
                     <div class="w-30 h-full bg-blue-900 flex flex-col items-center justify-between py-5">
                         <div class="mt-14 md:mt-0 space-y-5">
-                            <div class="buttonNav">
-                                <figure class="w-10 h-10 cursor-pointer">
-                                    <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 213.25 208.08">
-                                        <path fill="none" stroke-miterlimit="10" stroke-width="16" d="M200.8 12.62c-7.26-7.25-18.7-4.07-21.81-3a3.44 3.44 0 0 0-1.35.83l-116.7 116.7a9.4 9.4 0 0 0-2.29 3.68l-6.11 17.92a9.56 9.56 0 0 0 12.13 12.13l17.93-6.1a9.7 9.7 0 0 0 3.67-2.29L202.94 35.82a3.5 3.5 0 0 0 .86-1.44c.99-3.24 3.87-14.88-3-21.79M120 17.08H51a43 43 0 0 0-43 43v97a43 43 0 0 0 43 43h96a43 43 0 0 0 43-43v-37"/>
-                                    </svg>                                      
-                                </figure>
-                                <p>Crear</p>
-                            </div>
-                            <div class="buttonNav">
-                                <figure class="w-10 h-10 cursor-pointer">
-                                    <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 198 199">
-                                        <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="8" y="8" width="79" height="79" rx="15.72"/>
-                                        <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="111" y="8" width="79" height="79" rx="15.72"/>
-                                        <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="8" y="112" width="79" height="79" rx="15.72"/>
-                                        <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="111" y="112" width="79" height="79" rx="15.72"/>
-                                    </svg>
-                                </figure>
-                                <p>Tableros</p>
-                            </div>
-                            <div class="buttonNav">
-                                <figure class="w-10 h-10cursor-pointer">
-                                    <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 192.49">
-                                        <path fill="none" stroke-miterlimit="10" stroke-width="16" d="M8 1.49v152.88a30.11 30.11 0 0 0 30.12 30.12H190m-136.9-15v-51.75m34.3 51.75V80.37m37.98 89.12v-56.06m35.52 56.06v-115M49 94.49 74.66 53a14 14 0 0 1 22-2l13.2 14.39c6.52 7.12 18.47 5.46 22.64-3.15L161 3.49"/>
-                                    </svg>
-                                </figure>
-                                <p>Estadisticas</p>
-                            </div>
+                            {% block opcionesMenu %}{%  endblock opcionesMenu %}
                         </div>
     
-                        <figure class="w-10 h-10 cursor-pointer">
-                            <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 198 199">
-                                <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="57" y="8" width="79" height="79" rx="39.5"/>
-                                <path fill="none" stroke-miterlimit="10" stroke-width="16" d="M126.72 112h23.78a39.49 39.49 0 0 1 39.5 39.5 39.49 39.49 0 0 1-39.5 39.5h-103A39.49 39.49 0 0 1 8 151.5 39.49 39.49 0 0 1 47.5 112z"/>
-                            </svg>
-                        </figure>
+                        <a href="{% url "Inicio" %}" class="w-10 h-10 cursor-pointer">
+                            <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 61.54">
+                                <path d="M0 30.7V3.78A3.66 3.66 0 0 1 3.67 0h33.89a3.84 3.84 0 0 1 2.74.9 3.5 3.5 0 0 1 1.19 2.62V13.8c0 .32-.12.4-.41.39H37.6c-.37 0-.44-.14-.43-.46V4.84c0-.42-.12-.54-.54-.54H4.83c-.43 0-.52.15-.52.55v51.8c0 .42.09.56.55.56h31.77c.45 0 .56-.12.56-.56v-8.67c0-.6 0-.6.62-.6h3.27c.31 0 .43.09.43.42v10.28A3.5 3.5 0 0 1 38 61.53H3.49A3.46 3.46 0 0 1 0 58zm41.7 2.36h-7.89c-.39 0-.51.1-.51.51v5.75c0 1-.59 1.33-1.46.87l-16.08-8.58c-.35-.19-.64-.42-.64-.85s.3-.66.65-.84l16.09-8.57c.86-.46 1.45-.1 1.45.89v5.7c0 .44.11.57.55.57h15.6a2.45 2.45 0 0 1 1.95.78 2.12 2.12 0 0 1 .4 2.39 2.23 2.23 0 0 1-2.18 1.39h-5.44Z"/>
+                            </svg>                              
+                        </a>
                     </div>
 
                 </div>
@@ -63,7 +42,7 @@
             </div>
 
             <div class="flex gap-5 px-3">
-                <figure class="w-10 h-10 cursor-pointer ">
+                <figure onclick="openModalMiembros()" class="w-10 h-10 cursor-pointer ">
                     <svg stroke="#fff" class="h-full w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 319.93 199">
                         <path fill="none" stroke-miterlimit="10" stroke-width="20" d="M190.22 112H214a39.49 39.49 0 0 1 39.5 39.5A39.49 39.49 0 0 1 214 191H111a39.49 39.49 0 0 1-39.5-39.5A39.49 39.49 0 0 1 111 112zM86.43 180.9H37.75A31.26 31.26 0 0 1 6.5 149.64a31.25 31.25 0 0 1 31.25-31.25h52.68M243.5 180.9h38.68a31.26 31.26 0 0 0 31.25-31.26 31.25 31.25 0 0 0-31.25-31.25H239.5"/>
                         <rect fill="none" stroke-miterlimit="10" stroke-width="20" x="120.5" y="8" width="79" height="79" rx="39.5"/>
@@ -71,7 +50,7 @@
                         <rect fill="none" stroke-miterlimit="10" stroke-width="20" x="212.16" y="36.1" width="62.51" height="62.51" rx="31.25"/>
                     </svg>
                 </figure>
-                <figure class="w-10 h-10 cursor-pointer">
+                <figure onclick="openModalOpcion()" class="w-10 h-10 cursor-pointer">
                     <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 211.06 207">
                         <path fill="none" stroke-miterlimit="10" stroke-width="16" d="M28.38 161.81c.76-2.45 1.27-4.62 2.09-6.65q3.53-8.76 7.29-17.41a3.63 3.63 0 0 0 0-3.76 9 9 0 0 1-1.25-3c-.62-3.21-2.87-4.37-5.7-5.35-5.62-2-11.12-4.23-16.67-6.38l-.56-.23c-3.87-1.42-5.9-3.75-5.5-8.32A154 154 0 0 0 8.13 95c0-2.18.66-3.84 2.7-4.74 6.17-2.73 12.25-5.74 18.59-8 4.06-1.47 6.49-3.69 7.88-7.78a7.82 7.82 0 0 0-.3-6.41c-3-6.52-5.68-13.14-8.42-19.75-.91-2.22-.38-4 1.46-5.77 4.44-4.13 8.76-8.39 13-12.7 2-2.07 4.28-1.67 6.51-.84 6.53 2.42 13 4.85 19.49 7.5a8.75 8.75 0 0 0 6.43.3c4.47-1.34 6.88-4 8.31-8.39 1.77-5.46 4.25-10.69 6.48-16 1.29-3.07 3.34-4.61 7-4.4 5.83.33 11.69.12 17.53.06a4 4 0 0 1 4 2.27c2.53 5.24 5 10.53 7.4 15.82 1 2.13 1.92 4.28 2.73 6.48a4.48 4.48 0 0 0 2.24 2.26c5 3.12 9.58 2.32 14.6-.23s10.62-4.37 16-6.52c2.41-1 4.33-.36 6.15 1.48 4 4 7.94 8.08 12.17 11.82 2.43 2.16 2.82 4.34 1.69 7.13-2.81 6.94-5.57 13.9-8.42 20.83a5.45 5.45 0 0 0 0 3.59c1.24 5.72 5.14 8.07 10.36 9.64s10.09 3.9 15.12 5.91c3.11 1.24 4.48 3.31 4.27 6.85A144 144 0 0 0 203 111a6.13 6.13 0 0 1-4.07 6.61c-5.09 2.21-10.21 4.38-15.32 6.57l-.38.13c-7.41 2.95-7.43 2.94-10.19 10.54a3.32 3.32 0 0 0 .27 2.21c2.66 6.06 5.38 12.1 8.08 18.15.06.12.13.24.18.36 2.28 5.86 2.19 6.29-2.32 10.68-3.43 3.34-7 6.53-10.23 10.05a6.21 6.21 0 0 1-7.58 1.77c-6.81-2.62-13.64-5.19-20.41-7.9a6.92 6.92 0 0 0-4.73-.12c-4.93 1.27-7.63 4.13-9.14 9-1.66 5.41-4.28 10.53-6.46 15.78-1.22 2.93-3.14 4.3-6.53 4.13-5.58-.28-11.2-.25-16.78 0a5.71 5.71 0 0 1-6-3.72c-1.89-4.06-3.8-8.12-5.62-12.21-1.32-3-2.51-6.05-3.76-9.08-.15-.37-.25-.92-.53-1.05-1.94-.88-4-1.57-5.89-2.52s-3.78-.75-5.85.14c-6.81 2.94-13.74 5.61-20.61 8.4-2.3.93-4.09.27-5.79-1.3-4.38-4.38-8.86-8.65-13.24-13a14.4 14.4 0 0 1-1.72-2.68Zm77.32-91c-18.4.07-33.47 14.18-33.53 32.59-.07 19 15.25 32.7 33 32.93 18.32.23 33.65-13.87 33.83-32.46S124.06 71 105.7 71"/>
                     </svg>                      
@@ -80,37 +59,80 @@
         </nav>
     </header>
 
-    <main class="text-white md:h-[calc(100%-3.75rem)] md:overflow-y-hidden flex place-content-center md:place-content-baseline md:ml-30 scrollbar scrollbar-thumb-gray-700 ">
-        <section class="my-5 py-4 md:m-0 md:p-0 grid md:grid-flow-col auto-cols-auto gap-5 md:gap-10 place-items-center w-auto" >
+    <div class="fixed top-0 left-0 hidden text-white" id="modalOpcion">
+        <div class="w-screen h-screen bg-black/30 flex items-center justify-center">
+    
+            <div class="bg-blue-900 w-[22rem] h-[30rem] rounded-md flex flex-col items-center justify-around gap-5 p-10">
 
-            <article class="styleColumnas md:ml-10">
-                <h2 class="text-2xl font-bold">Tareas</h2>
+                <h2 class="font-bold text-3xl">Opciones Proyecto</h2>
 
-                <div class="bg-blue-500 h-40 w-full rounded-2xl">
-                    
+                <form class="flex flex-col items-center justify-center gap-4 w-full">
+                    <label class="flex flex-col font-semibold text-lg gap-3 w-full">
+                        Nombre del Proyecto
+                        <input class="inputStyle" placeholder="Proyecto Trayecto 3" type="text">
+                    </label>
+
+                    <button class="botonStyle" onclick="closeModalOpcion()">Actualizar</button>
+                </form>
+
+                <div class="flex flex-col items-center justify-center gap-3">
+                    <button class="botonStyle bg-red-500" onclick="closeModalOpcion()">Eliminar</button>
+                    <button class="botonStyle" onclick="closeModalOpcion()">Close</button>
                 </div>
-            </article>
- 
-            <article class="styleColumnas">
-                <h2 class="text-2xl font-bold">En Proceso</h2>
+            </div>
+    
+        </div>
+    </div>
 
-                <div class="bg-blue-500 h-40 w-full rounded-2xl">
-                    
+    <div class="fixed top-0 left-0 hidden text-white" id="modalMiembros">
+        <div class="w-screen h-screen bg-black/30 flex items-center justify-center">
+    
+            <div class="bg-blue-900 w-[22rem] h-[30rem] rounded-md flex flex-col items-center justify-around gap-5 p-10">
+
+                <h2 class="font-bold text-3xl">Miembros del Proyecto</h2>
+
+                <div class="flex flex-col gap-3 w-full">
+                    <p>correo1@gmail.com</p>
+                    <p>correo2@gmail.com</p>
+                    <p>correo3@gmail.com</p>
                 </div>
-            </article>
- 
-            <article class="styleColumnas">
-                <h2 class="text-2xl font-bold">Finalizado</h2>
 
-                <div class="bg-blue-500 h-40 w-full rounded-2xl">
-                    
+                <div class="flex flex-col gap-2">
+                    <button class="botonStyle" onclick="closeModalMiembros(), openModalInvitar()">Invitar</button>
+                    <button class="botonStyle" onclick="closeModalMiembros()">Close</button>
                 </div>
-            </article>
-            
-            <button class="h-20 bg-blue-800 rounded-xl p-5 text-xl font-bold w-[100%] md:w-[22rem] max-w-[20rem] md:mr-10 cursor-pointer">
-                Añadir otra Columna
-            </button>
+                
+            </div>
+    
+        </div>
+    </div>
 
-        </section>
-    </main>
+    <div class="fixed top-0 left-0 hidden text-white" id="modalInvitar">
+        <div class="w-screen h-screen bg-black/30 flex items-center justify-center">
+    
+            <div class="bg-blue-900 w-[22rem] h-[30rem] rounded-md flex flex-col items-center justify-around gap-5 p-10">
+
+                <h2 class="font-bold text-3xl">Agregar Persona</h2>
+
+                <form class="flex flex-col items-center justify-center gap-4 w-full">
+                    <label class="flex flex-col font-semibold text-lg gap-3 w-full">
+                        Correo de la persona
+                        <input class="inputStyle" placeholder="correo@correo.com" type="text">
+                    </label>
+
+                    <button class="botonStyle" onclick="closeModalInvitar()">Agregar</button>
+                </form>
+                
+                <button class="botonStyle" onclick="closeModalInvitar()">Close</button>
+            </div>
+    
+        </div>
+    </div>
+    
+    {% block tabProyectos %}{% endblock tabProyectos %}
+
 {% endblock Contenido %}
+
+{% block scriptJS %}
+    <script src="{% static 'js/modalShow.js' %}"></script>
+{% endblock scriptJS %}

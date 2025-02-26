@@ -1,0 +1,92 @@
+{% extends "proyectos.html" %}
+
+{% block opcionesMenu %}
+
+<div class="buttonNav" onclick="openModalCrear()">
+    <figure class="w-10 h-10 cursor-pointer">
+        <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 213.25 208.08">
+            <path fill="none" stroke-miterlimit="10" stroke-width="16" d="M200.8 12.62c-7.26-7.25-18.7-4.07-21.81-3a3.44 3.44 0 0 0-1.35.83l-116.7 116.7a9.4 9.4 0 0 0-2.29 3.68l-6.11 17.92a9.56 9.56 0 0 0 12.13 12.13l17.93-6.1a9.7 9.7 0 0 0 3.67-2.29L202.94 35.82a3.5 3.5 0 0 0 .86-1.44c.99-3.24 3.87-14.88-3-21.79M120 17.08H51a43 43 0 0 0-43 43v97a43 43 0 0 0 43 43h96a43 43 0 0 0 43-43v-37"/>
+        </svg>                                      
+    </figure>
+    <p>Crear</p>
+</div>
+<a href="{% url "ProyectoEstadistica" %}" class="buttonNav">
+    <figure class="w-10 h-10cursor-pointer">
+        <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 192.49">
+            <path fill="none" stroke-miterlimit="10" stroke-width="16" d="M8 1.49v152.88a30.11 30.11 0 0 0 30.12 30.12H190m-136.9-15v-51.75m34.3 51.75V80.37m37.98 89.12v-56.06m35.52 56.06v-115M49 94.49 74.66 53a14 14 0 0 1 22-2l13.2 14.39c6.52 7.12 18.47 5.46 22.64-3.15L161 3.49"/>
+        </svg>
+    </figure>
+    <p>Estadisticas</p>
+</a>
+{%  endblock opcionesMenu %}
+
+{% block tabProyectos %}
+
+<main class="text-white md:h-[calc(100%-3.75rem)] md:overflow-y-hidden flex place-content-center md:place-content-baseline md:ml-30 scrollbar scrollbar-thumb-gray-700">
+        
+    <div class="fixed top-0 left-0 hidden" id="modalCrear">
+        <div class="w-screen h-screen bg-black/30 flex items-center justify-center">
+    
+            <div class="bg-blue-900 w-[22rem] h-[30rem] rounded-md flex flex-col items-center justify-center gap-5 p-10">
+                
+                <h2 class="font-bold text-3xl">Crear Tarea</h2>
+
+                <form class="flex flex-col items-center justify-center gap-4 w-full">
+                    <label class="flex flex-col font-semibold text-lg gap-3 w-full">
+                        Nombre de la Tarea
+                        <input class="inputStyle" type="text">
+                    </label>
+
+                    <label class="flex flex-col font-semibold text-lg w-full">
+                        Descripcion
+                        <textarea class="inputStyle min-h-27 max-h-27"></textarea>
+                    </label>
+
+                    <button class="botonStyle" onclick="closeModalCrear()">Crear</button>
+                </form>
+                <button class="botonStyle" onclick="closeModalCrear()">Cancelar</button>
+            </div>
+    
+        </div>
+    </div>
+
+
+    <section id="tareasProyecto" class="my-5 py-4 md:m-0 md:p-0 grid md:grid-flow-col auto-cols-auto gap-5 md:gap-10 place-items-center w-auto" >
+
+        <article class="styleColumnas md:ml-10">
+            <h2 class="text-2xl font-bold">Pendiente</h2>
+
+            <div class="bg-blue-500 h-40 w-full rounded-2xl">
+                
+            </div>
+        </article>
+
+        <article class="styleColumnas">
+            <h2 class="text-2xl font-bold">En Proceso</h2>
+
+            <div class="bg-blue-500 h-40 w-full rounded-2xl">
+                
+            </div>
+        </article>
+
+        <article class="styleColumnas">
+            <h2 class="text-2xl font-bold">Verificar</h2>
+
+            <div class="bg-blue-500 h-40 w-full rounded-2xl">
+                
+            </div>
+        </article>
+
+        <article class="styleColumnas md:mr-10">
+            <h2 class="text-2xl font-bold">Finalizado</h2>
+
+            <div class="bg-blue-500 h-40 w-full rounded-2xl">
+                
+            </div>
+        </article>
+
+    </section>
+</main>
+
+{% endblock tabProyectos %}
+
