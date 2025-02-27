@@ -11,11 +11,8 @@
     --color-amber-600: oklch(0.666 0.179 58.318);
     --color-amber-800: oklch(0.473 0.137 46.201);
     --color-green-700: oklch(0.527 0.154 150.069);
-    --color-blue-300: oklch(0.809 0.105 251.813);
-    --color-blue-400: oklch(0.707 0.165 254.624);
     --color-blue-500: oklch(0.623 0.214 259.815);
     --color-blue-600: oklch(0.546 0.245 262.881);
-    --color-blue-700: oklch(0.488 0.243 264.376);
     --color-blue-800: oklch(0.424 0.199 265.638);
     --color-blue-900: oklch(0.379 0.146 265.522);
     --color-blue-950: oklch(0.282 0.091 267.935);
@@ -211,6 +208,9 @@
   .static {
     position: static;
   }
+  .inset-0 {
+    inset: calc(var(--spacing) * 0);
+  }
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
@@ -298,44 +298,17 @@
   .h-30 {
     height: calc(var(--spacing) * 30);
   }
+  .h-35 {
+    height: calc(var(--spacing) * 35);
+  }
   .h-40 {
     height: calc(var(--spacing) * 40);
-  }
-  .h-50 {
-    height: calc(var(--spacing) * 50);
-  }
-  .h-60 {
-    height: calc(var(--spacing) * 60);
   }
   .h-70 {
     height: calc(var(--spacing) * 70);
   }
   .h-\[30rem\] {
     height: 30rem;
-  }
-  .h-\[40rem\] {
-    height: 40rem;
-  }
-  .h-\[50rem\] {
-    height: 50rem;
-  }
-  .h-\[55rem\] {
-    height: 55rem;
-  }
-  .h-\[60rem\] {
-    height: 60rem;
-  }
-  .h-\[70rem\] {
-    height: 70rem;
-  }
-  .h-\[100rem\] {
-    height: 100rem;
-  }
-  .h-\[calc\(max-content\+10rem\)\] {
-    height: calc(max - content + 10rem);
-  }
-  .h-\[calc\(max-content\+50rem\)\] {
-    height: calc(max - content + 50rem);
   }
   .h-auto {
     height: auto;
@@ -361,26 +334,14 @@
   .w-10 {
     width: calc(var(--spacing) * 10);
   }
-  .w-20 {
-    width: calc(var(--spacing) * 20);
-  }
   .w-30 {
     width: calc(var(--spacing) * 30);
-  }
-  .w-40 {
-    width: calc(var(--spacing) * 40);
   }
   .w-50 {
     width: calc(var(--spacing) * 50);
   }
-  .w-60 {
-    width: calc(var(--spacing) * 60);
-  }
   .w-70 {
     width: calc(var(--spacing) * 70);
-  }
-  .w-80 {
-    width: calc(var(--spacing) * 80);
   }
   .w-\[22rem\] {
     width: 22rem;
@@ -406,14 +367,8 @@
   .resize {
     resize: both;
   }
-  .auto-cols-auto {
-    grid-auto-columns: auto;
-  }
   .auto-cols-fr {
     grid-auto-columns: minmax(0, 1fr);
-  }
-  .auto-cols-max {
-    grid-auto-columns: max-content;
   }
   .flex-col {
     flex-direction: column;
@@ -429,9 +384,6 @@
   }
   .items-center {
     align-items: center;
-  }
-  .items-start {
-    align-items: flex-start;
   }
   .justify-around {
     justify-content: space-around;
@@ -501,20 +453,11 @@
   .bg-black\/40 {
     background-color: color-mix(in oklab, var(--color-black) 40%, transparent);
   }
-  .bg-blue-300 {
-    background-color: var(--color-blue-300);
-  }
-  .bg-blue-400 {
-    background-color: var(--color-blue-400);
-  }
   .bg-blue-500 {
     background-color: var(--color-blue-500);
   }
   .bg-blue-600 {
     background-color: var(--color-blue-600);
-  }
-  .bg-blue-700 {
-    background-color: var(--color-blue-700);
   }
   .bg-blue-800 {
     background-color: var(--color-blue-800);
@@ -564,9 +507,6 @@
   .px-7 {
     padding-inline: calc(var(--spacing) * 7);
   }
-  .px-10 {
-    padding-inline: calc(var(--spacing) * 10);
-  }
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
@@ -576,14 +516,8 @@
   .py-10 {
     padding-block: calc(var(--spacing) * 10);
   }
-  .pb-3 {
-    padding-bottom: calc(var(--spacing) * 3);
-  }
   .pb-5 {
     padding-bottom: calc(var(--spacing) * 5);
-  }
-  .pb-7 {
-    padding-bottom: calc(var(--spacing) * 7);
   }
   .pb-10 {
     padding-bottom: calc(var(--spacing) * 10);
@@ -631,9 +565,6 @@
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
   }
-  .text-black {
-    color: var(--color-black);
-  }
   .text-white {
     color: var(--color-white);
   }
@@ -647,18 +578,6 @@
   .select-none {
     -webkit-user-select: none;
     user-select: none;
-  }
-  .scrollbar-thumb-blue-500 {
-    --scrollbar-thumb: oklch(0.623 0.214 259.815);
-  }
-  .scrollbar-thumb-blue-600 {
-    --scrollbar-thumb: oklch(0.546 0.245 262.881);
-  }
-  .scrollbar-thumb-blue-800 {
-    --scrollbar-thumb: oklch(0.424 0.199 265.638);
-  }
-  .scrollbar-thumb-blue-800\/50 {
-    --scrollbar-thumb: color-mix(in oklab, oklch(0.424 0.199 265.638) 50%, transparent);
   }
   .scrollbar-thumb-blue-900 {
     --scrollbar-thumb: oklch(0.379 0.146 265.522);
@@ -699,21 +618,6 @@
   .md\:my-0 {
     @media (width >= 48rem) {
       margin-block: calc(var(--spacing) * 0);
-    }
-  }
-  .md\:my-10 {
-    @media (width >= 48rem) {
-      margin-block: calc(var(--spacing) * 10);
-    }
-  }
-  .md\:my-15 {
-    @media (width >= 48rem) {
-      margin-block: calc(var(--spacing) * 15);
-    }
-  }
-  .md\:my-35 {
-    @media (width >= 48rem) {
-      margin-block: calc(var(--spacing) * 35);
     }
   }
   .md\:my-40 {
@@ -791,6 +695,11 @@
       justify-content: space-around;
     }
   }
+  .md\:gap-7 {
+    @media (width >= 48rem) {
+      gap: calc(var(--spacing) * 7);
+    }
+  }
   .md\:gap-10 {
     @media (width >= 48rem) {
       gap: calc(var(--spacing) * 10);
@@ -815,16 +724,6 @@
   .lg\:grid-cols-3 {
     @media (width >= 64rem) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-  .lg\:grid-cols-4 {
-    @media (width >= 64rem) {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-  .xl\:grid-cols-4 {
-    @media (width >= 80rem) {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
   .\32 xl\:grid-cols-4 {
@@ -865,7 +764,16 @@
     background-color: var(--color-blue-800);
     padding: calc(var(--spacing) * 5);
     @media (width >= 48rem) {
-      width: 22rem;
+      width: 23rem;
+    }
+    @media (width >= 48rem) {
+      max-width: 27rem;
+    }
+    @media (width >= 48rem) {
+      --tw-scale-x: 80%;
+      --tw-scale-y: 80%;
+      --tw-scale-z: 80%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
     }
   }
   .botonStyle {
@@ -909,4 +817,19 @@
   syntax: "*";
   inherits: false;
   initial-value: solid;
+}
+@property --tw-scale-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-scale-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-scale-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
 }
