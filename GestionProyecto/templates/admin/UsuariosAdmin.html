@@ -1,0 +1,68 @@
+{% extends "admin.html" %}
+
+{% block OpcionesAdmin %}
+
+
+<h2 class="text-center text-2xl font-bold">Administradores</h2>
+
+<div class="fixed top-0 left-0 hidden z-99" id="modalAgregarAdmin">
+    <div class="w-screen h-screen bg-black/30 flex items-center justify-center">
+
+        <div class="bg-blue-900 w-[22rem] h-[30rem] rounded-md flex flex-col items-center justify-around gap-5 p-10">
+            
+            <h2 class="font-bold text-3xl">Agregar Administrador</h2>
+
+            <form class="flex flex-col items-center justify-around gap-4 w-full">
+
+                <label class="flex flex-col font-semibold text-lg gap-3 w-full">
+                    Correo del Usuario
+                    <input class="inputStyle" type="email">
+                </label>
+
+                <button class="botonStyle" onclick="closeModalAgregarAdmin()">Agregar</button>
+            </form>
+            <button class="botonStyle" onclick="closeModalAgregarAdmin()">Cancelar</button>
+        </div>
+
+    </div>
+</div>
+
+<button onclick="openModalAgregarAdmin()" class="botonStyle w-max mx-auto md:mx-0 my-10">Agregar Administrador</button>
+
+<article class="flex flex-col gap-10 max-w-screen-lg ">
+
+    <div class="grid auto-rows-fr auto-cols-fr md:grid-flow-col justify-between place-content-center place-items-center  w-full h-40 md:h-15 bg-blue-800 p-5 rounded-2xl sombraPanels">
+        <h2>Victor Ramirez</h2>
+        <p>Victor@correo.com</p>
+        <figure>
+            <svg class="fill-white w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8zm1 2h2v8H9zm4 0h2v8h-2z"/>
+            </svg>              
+        </figure>
+    </div>
+
+    <div class="grid auto-rows-fr auto-cols-fr md:grid-flow-col justify-between place-content-center place-items-center  w-full h-40 md:h-15 bg-blue-800 p-5 rounded-2xl sombraPanels">
+        <h2>Luis Lopez</h2>
+        <p>Luis@correo.com</p>
+        <figure>
+            <svg class="fill-white w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8zm1 2h2v8H9zm4 0h2v8h-2z"/>
+            </svg>              
+        </figure>
+    </div>
+
+    <div class="grid auto-rows-fr auto-cols-fr md:grid-flow-col justify-between place-content-center place-items-center  w-full h-40 md:h-15 bg-blue-800 p-5 rounded-2xl sombraPanels">
+        <h2>Francisco Cristhian Hernandez Guerrero</h2>
+        <p>Francisco_99@correo.com</p>
+        <figure>
+            <svg class="fill-white w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8zm1 2h2v8H9zm4 0h2v8h-2z"/>
+            </svg>              
+        </figure>
+    </div>
+
+
+</article>
+
+
+{% endblock OpcionesAdmin %}   

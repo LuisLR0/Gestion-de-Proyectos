@@ -1,0 +1,82 @@
+{% extends "index.html" %}
+
+{% block Titulo %}Perfil{% endblock Titulo %}
+
+{% block Contenido %}
+
+    <main class="w-full h-max text-white p-5 flex place-content-center">
+
+        
+        <section class="w-full h-full lg:max-w-screen-lg grid auto-rows-max gap-7 mb-5">
+            <a class="md:col-start-1 md:col-end-3 text-4xl font-bold" href="{% url 'Inicio' %}"> < </a>
+
+            <header class="w-full h-50 bg-blue-800 rounded-lg place-content-center space-y-5 flex flex-col items-center md:row-start-2 md:row-end-4 md:h-full">
+                <div class="flex md:flex-col items-center w-full">
+                    <figure class="w-27 h-27">
+                        <svg class="fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2m0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3m-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228"/>
+                        </svg>                      
+                    </figure>
+                    <article class="ml-2">
+                        <h2 class="titulos md:text-center">Luis Lopez</h2>
+                        <div class="flex justify-center items-center gap-2">
+                            <figure>
+                                <svg class="fill-white w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2m0 2v.511l-8 6.223-8-6.222V6zM4 18V9.044l7.386 5.745a.994.994 0 0 0 1.228 0L20 9.044 20.002 18z"/>
+                                </svg>                                  
+                            </figure>
+                            <p>correo@gmail.com</p>
+                        </div>
+                    </article>
+                </div>
+                <a href="{% url 'PAdminProyectos' %}" class="botonStyle text-center">Panel Administrador</a>
+            </header>
+
+
+            <article class="w-full h-33 bg-blue-800 rounded-lg p-5 space-y-4 md:col-start-2 md:col-end-3">
+                <h2 class="titulos">Proyectos</h2>
+                <p class="text-4xl font-black text-center">2</p>
+            </article>
+
+            <article class="w-full h-33 bg-blue-800 rounded-lg p-5 space-y-4 md:col-start-2 md:col-end-3">
+                <h2 class="titulos">Tareas Pendientes</h2>
+                <p class="text-4xl font-black text-center">15</p>
+            </article>
+
+
+            <main class="w-full h-max bg-blue-800 rounded-lg p-5 flex flex-col md:col-start-1 md:col-end-3">
+
+
+                <h2 class="titulos">Tus Proyectos</h2>
+
+                <section class="grid my-5 gap-15 md:grid-cols-2 lg:grid-cols-3 ">
+                    <div class="bg-blue-900 w-full h-max rounded-2xl p-5 sombraPanels">
+                        <h4 class="text-xl font-bold mb-5">Servicio de Transporte ServiExpress</h4>
+        
+                        <span class="text-lg font-medium">Tareas Pendientes: <strong>234</strong> </span>
+                        <p class="text-lg font-medium">Miembros: <strong>3</strong> </p>
+        
+                        <div class="w-full flex flex-row-reverse">
+                            <a href='{% url "ProyectoTablero" %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>
+                        </div>
+                    </div>
+     
+                    <div class="bg-blue-900 w-full h-max rounded-2xl p-5 sombraPanels">
+                        <h4 class="text-xl font-bold mb-5">Gestion de Proyectos SID3C</h4>
+        
+                        <span class="text-lg font-medium">Tareas Pendientes: <strong>234</strong> </span>
+                        <p class="text-lg font-medium">Miembros: <strong>3</strong> </p>
+        
+                        <div class="w-full flex flex-row-reverse">
+                            <a href='{% url "ProyectoTablero" %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>
+                        </div>
+                    </div>
+                </section>
+ 
+
+            </main>
+
+        </section>
+    </main>
+    
+{% endblock Contenido %}

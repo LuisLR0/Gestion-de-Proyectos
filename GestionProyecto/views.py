@@ -20,3 +20,16 @@ def TableroProyecto (request):
 def TableroEstadistica (request):
     
     return render(request, 'proyecto/Estadisticas.html')
+
+def Perfil(request):
+    
+    return render(request, 'perfil.html')
+
+def PanelAdmin(request):
+    return render(request, 'admin.html')
+
+def ProyectosAdmin(request):
+    return render(request, 'admin/ProyectosAdmin.html')
+
+def UsuariosAdmin(request):
+    return render(request, 'admin/UsuariosAdmin.html')
