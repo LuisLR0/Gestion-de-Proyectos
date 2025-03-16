@@ -94,3 +94,15 @@ const closeModalAgregarAdmin = () => {
     document.getElementById("modalAgregarAdmin").classList.add("hidden")
     openScrollModals()
 }
+
+// Para abrir y cerrar modal de Crear Proyecto
+const openModalCrearProyecto = () => {
+    document.getElementById("modalCrearProyecto").classList.remove("hidden")
+    closeScrollModals()
+    CheckedHambur.checked = false
+}
+
+const closeModalCrearProyecto = () => {
+    document.getElementById("modalCrearProyecto").classList.add("hidden")
+    openScrollModals()
+}

@@ -1,4 +1,5 @@
 {% extends "index.html" %}
+{% load static %}
 
 {% block Titulo %} Inicio {% endblock Titulo %}
 
@@ -8,10 +9,22 @@
     <nav class="flex flex-col w-full md:flex-row justify-center md:justify-around items-center gap-4 p-4">
         <h2 class="text-5xl  font-black">SOFT</h2>
 
-        <div class="flex gap-10 font-medium">
+        <div class="flex items-center gap-10 font-medium">
             <a href="#">Inicio</a>
+            {% if user.is_authenticated %}
+            <a href='{% url "Perfil" %}' class="cursor-pointer">
+                
+                <svg class="fill-white h-10 w-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5m0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3m9 11v-1a7 7 0 0 0-7-7h-4a7 7 0 0 0-7 7v1h2v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1z"/>
+                </svg>                                  
+                
+                
+            </a>
+            {% else %}
             <a href="{% url "Login" %}">Login</a>
             <a href="{% url "Registro" %}">Registro</a>
+                
+            {% endif %}
         </div>
     </nav>
 
@@ -30,38 +43,79 @@
     </section>
 </header>
 
+
+<!-- Modal de crear Proyecto -->
+<div class="fixed top-0 left-0 z-99 hidden text-white" id="modalCrearProyecto">
+    <div class="w-screen h-screen bg-black/30 flex items-center justify-center">
+
+        <div class="bg-blue-900 w-[22rem] h-[30rem] rounded-md flex flex-col items-center justify-around gap-5 p-10">
+            
+            <h2 class="font-bold text-3xl">Crear Proyecto</h2>
+
+            <form method="post" class="flex flex-col items-center justify-around gap-4 w-full">
+
+                {% csrf_token %}
+
+                {% if aviso %}
+
+                    <span class="font-bold text-red-500">{{ aviso }}</span>
+                    
+                {% endif %}
+
+                <label class="flex flex-col font-semibold text-lg gap-3 w-full">
+                    Nombre del Proyecto
+                    <input name="NombreProyecto" class="inputStyle" type="text">
+                </label>
+
+                <button onclick="closeModalCrearProyecto()" class="botonStyle" onclick="">Crear</button>
+
+            </form>
+            <button class="botonStyle" onclick="closeModalCrearProyecto()">Cancelar</button>
+        </div>
+
+    </div>
+</div>
+
 <main class="h-max text-white flex flex-col items-center px-7 py-10">
+    {% if user.is_authenticated %}
+
     <section id="proyectos" class="w-full">
         <h3 class="text-4xl font-bold text-center mb-10">Tus Proyectos</h3>
 
         <article class="grid my-5 gap-15 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
 
-            <div class="bg-blue-800 w-full h-max rounded-2xl p-5">
-                <h4 class="text-xl font-bold mb-5">Servicio de Transporte ServiExpress</h4>
+            {% for proyecto in proyectos %}
 
-                <span class="text-lg font-medium">Tareas Pendientes: <strong>234</strong> </span>
-                <p class="text-lg font-medium">Miembros: <strong>3</strong> </p>
+                <div class="bg-blue-800 w-full h-max rounded-2xl p-5">
+                    <h4 class="text-xl font-bold mb-5">{{ proyecto.id_proyecto.nombre }}</h4>
 
-                <div class="w-full flex flex-row-reverse">
-                    <a href='{% url "ProyectoTablero" %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>
+                    <span class="text-lg font-medium">Tareas Pendientes: <strong>234</strong> </span>
+                    <p class="text-lg font-medium">Miembros: <strong>3</strong> </p>
+
+                    <div class="w-full flex flex-row-reverse">
+                        <a href='{% url "ProyectoTablero" %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="bg-blue-800 w-full h-max rounded-2xl p-5">
-                <h4 class="text-xl font-bold mb-5">Gestion de Proyectos SID3C</h4>
-
-                <span class="text-lg font-medium">Tareas Pendientes: <strong>234</strong> </span>
-                <p class="text-lg font-medium">Miembros: <strong>3</strong> </p>
-
-                <div class="w-full flex flex-row-reverse">
-                    <a href='{% url "ProyectoTablero" %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>
-                </div>
-            </div>
+            {% endfor %}
  
-            
+            <div onclick="openModalCrearProyecto()" class="bg-blue-800 cursor-pointer select-none w-full h-max rounded-2xl p-5 flex flex-col justify-center items-center">
+                <h4 class="text-2xl font-bold mb-5">Crea tu Proyecto</h4>
+                <figure>
+                    <svg class="fill-white w-30 h-30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M20 2H8c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2m-2 9h-3v3h-2v-3h-3V9h3V6h2v3h3zM4 22h12v-2H4V8H2v12c0 1.103.897 2 2 2"/>
+                    </svg>                      
+                </figure>
+            </div>
 
         </article>
     </section>
+
+    {% endif %}
 </main>
 
 {% endblock Contenido %}
+
+{% block scriptJS %}
+    <script src="{% static 'js/modalShow.js' %}"></script>
+{% endblock scriptJS %}

@@ -9,26 +9,26 @@
             <a href="{% url "Inicio" %}" class="text-4xl font-black py-5 select-none">Soft Project</a>
             <p class="font-semibold text-2xl">Crea una cuenta</p>
 
-            <form class="flex flex-col py-10 px-5 gap-7 w-full items-center">
-                
+            <form method="post" class="flex flex-col py-10 px-5 gap-7 w-full items-center">
+                {% csrf_token %}
                 <label class="w-full font-semibold">
                     Nombres
-                    <input class="inputStyle" placeholder="Francisco" type="text">
+                    <input name="nombres" class="inputStyle" placeholder="Francisco" type="text">
                 </label>
 
                 <label class="w-full font-semibold">
                     Apellidos
-                    <input class="inputStyle" placeholder="De Miranda" type="text">
+                    <input name="apellidos" class="inputStyle" placeholder="De Miranda" type="text">
                 </label>
 
                 <label class="w-full font-semibold">
                     Correo Electrónico
-                    <input class="inputStyle" placeholder="correo@correo.com" type="email">
+                    <input name="correo" class="inputStyle" placeholder="correo@correo.com" type="email">
                 </label>
 
                 <label class="w-full font-semibold">
                     Contraseña
-                    <input class="inputStyle" placeholder="12345" type="password">
+                    <input name="contraseña" class="inputStyle" placeholder="12345" type="password">
                 </label>
 
                 <button class="bg-blue-600 hover:bg-blue-500 cursor-pointer rounded-md p-2 text-lg font-semibold w-50">Registrar</button>

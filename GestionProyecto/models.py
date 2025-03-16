@@ -34,10 +34,10 @@ class manageUsuario(BaseUserManager):
             nombre = nombre,
             apellido = apellido,
             password=password,
-            is_staff = True,
-            is_superuser = True,
         )
         
+        user.is_superuser = True
+        user.is_staff = True
         user.save(using=self._db)
         return user
     
@@ -72,7 +72,6 @@ class Proyectos(models.Model):
     
     id_proyecto = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
     estado = models.BooleanField(default=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_modificacion = models.DateTimeField(auto_now=True)
