@@ -1,0 +1,27 @@
+{% extends "proyectos.html" %}
+
+{% block opcionesMenu %}
+
+<a href="{% url "ProyectoTablero" id_proyecto %}" class="buttonNav">
+    <figure class="w-9 h-9 cursor-pointer">
+        <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 198 199">
+            <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="8" y="8" width="79" height="79" rx="15.72"/>
+            <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="111" y="8" width="79" height="79" rx="15.72"/>
+            <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="8" y="112" width="79" height="79" rx="15.72"/>
+            <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="111" y="112" width="79" height="79" rx="15.72"/>
+        </svg>
+    </figure>
+    <p class="text-[13px]">Tableros</p>
+</a>
+<a href="{% url "ProyectoEstadistica" id_proyecto %}" class="buttonNav">
+    <figure class="w-9 h-9 cursor-pointer">
+        <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 192.49">
+            <path fill="none" stroke-miterlimit="10" stroke-width="16" d="M8 1.49v152.88a30.11 30.11 0 0 0 30.12 30.12H190m-136.9-15v-51.75m34.3 51.75V80.37m37.98 89.12v-56.06m35.52 56.06v-115M49 94.49 74.66 53a14 14 0 0 1 22-2l13.2 14.39c6.52 7.12 18.47 5.46 22.64-3.15L161 3.49"/>
+        </svg>
+    </figure>
+    <p class="text-[13px]" >Estadisticas</p>
+</a>
+{%  endblock opcionesMenu %}
+
+{% block tabProyectos %}
+{% endblock tabProyectos %}

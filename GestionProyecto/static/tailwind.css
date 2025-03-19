@@ -12,7 +12,7 @@
     }
 
     .styleColumnas {
-        @apply h-[45rem] md:scale-80 w-[19rem] md:w-[23rem] md:max-w-[27rem] max-w-[20rem] bg-blue-800 rounded-xl flex flex-col gap-5 p-5;
+        @apply h-[45rem] md:scale-80 w-[19rem] md:w-[23rem] md:max-w-[27rem] max-w-[20rem] bg-blue-800 rounded-xl flex flex-col gap-5 p-5 overflow-y-scroll scrollbar scrollbar-thumb-blue-500/50 ;
     }
 
     .botonStyle {

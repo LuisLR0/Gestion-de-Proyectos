@@ -521,9 +521,6 @@
   .collapse {
     visibility: collapse;
   }
-  .absolute {
-    position: absolute;
-  }
   .fixed {
     position: fixed;
   }
@@ -539,17 +536,8 @@
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
-  .top-8 {
-    top: calc(var(--spacing) * 8);
-  }
-  .right-0 {
-    right: calc(var(--spacing) * 0);
-  }
   .left-0 {
     left: calc(var(--spacing) * 0);
-  }
-  .z-2 {
-    z-index: 2;
   }
   .z-99 {
     z-index: 99;
@@ -644,9 +632,6 @@
   .h-15 {
     height: calc(var(--spacing) * 15);
   }
-  .h-17 {
-    height: calc(var(--spacing) * 17);
-  }
   .h-20 {
     height: calc(var(--spacing) * 20);
   }
@@ -700,9 +685,6 @@
   }
   .w-10 {
     width: calc(var(--spacing) * 10);
-  }
-  .w-25 {
-    width: calc(var(--spacing) * 25);
   }
   .w-27 {
     width: calc(var(--spacing) * 27);
@@ -761,6 +743,9 @@
   .auto-cols-fr {
     grid-auto-columns: minmax(0, 1fr);
   }
+  .grid-flow-col {
+    grid-auto-flow: column;
+  }
   .auto-rows-fr {
     grid-auto-rows: minmax(0, 1fr);
   }
@@ -790,12 +775,6 @@
   }
   .justify-center {
     justify-content: center;
-  }
-  .gap-1 {
-    gap: calc(var(--spacing) * 1);
-  }
-  .gap-1\.5 {
-    gap: calc(var(--spacing) * 1.5);
   }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
@@ -830,6 +809,13 @@
       --tw-space-y-reverse: 0;
       margin-block-start: calc(calc(var(--spacing) * 5) * var(--tw-space-y-reverse));
       margin-block-end: calc(calc(var(--spacing) * 5) * calc(1 - var(--tw-space-y-reverse)));
+    }
+  }
+  .space-y-7 {
+    :where(& > :not(:last-child)) {
+      --tw-space-y-reverse: 0;
+      margin-block-start: calc(calc(var(--spacing) * 7) * var(--tw-space-y-reverse));
+      margin-block-end: calc(calc(var(--spacing) * 7) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
   .overflow-hidden {
@@ -888,14 +874,26 @@
   .bg-green-700 {
     background-color: var(--color-green-700);
   }
+  .bg-purple-500 {
+    background-color: var(--color-purple-500);
+  }
   .bg-purple-600 {
     background-color: var(--color-purple-600);
+  }
+  .bg-red-400 {
+    background-color: var(--color-red-400);
   }
   .bg-red-500 {
     background-color: var(--color-red-500);
   }
   .bg-red-700 {
     background-color: var(--color-red-700);
+  }
+  .bg-yellow-50 {
+    background-color: var(--color-yellow-50);
+  }
+  .bg-yellow-500 {
+    background-color: var(--color-yellow-500);
   }
   .fill-white {
     fill: var(--color-white);
@@ -1038,21 +1036,6 @@
       background-color: var(--color-amber-800);
     }
   }
-  .peer-checked\/opcTarea\:flex {
-    &:is(:where(.peer\/opcTarea):checked ~ *) {
-      display: flex;
-    }
-  }
-  .peer-checked\/opcTarea2\:flex {
-    &:is(:where(.peer\/opcTarea2):checked ~ *) {
-      display: flex;
-    }
-  }
-  .peer-checked\/opcTarea3\:flex {
-    &:is(:where(.peer\/opcTarea3):checked ~ *) {
-      display: flex;
-    }
-  }
   .hover\:bg-blue-500 {
     &:hover {
       @media (hover: hover) {
@@ -1113,11 +1096,6 @@
   .md\:mr-5 {
     @media (width >= 48rem) {
       margin-right: calc(var(--spacing) * 5);
-    }
-  }
-  .md\:ml-5 {
-    @media (width >= 48rem) {
-      margin-left: calc(var(--spacing) * 5);
     }
   }
   .md\:ml-25 {
@@ -1288,15 +1266,36 @@
     user-select: none;
   }
   .styleColumnas {
+    &::-webkit-scrollbar-track {
+      background-color: var(--scrollbar-track);
+      border-radius: var(--scrollbar-track-radius);
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbar-thumb);
+      border-radius: var(--scrollbar-thumb-radius);
+    }
+    &::-webkit-scrollbar-corner {
+      background-color: var(--scrollbar-corner);
+      border-radius: var(--scrollbar-corner-radius);
+    }
+    scrollbar-width: auto;
+    scrollbar-color: var(--scrollbar-thumb, initial) var(--scrollbar-track, initial);
+    &::-webkit-scrollbar {
+      display: block;
+      width: var(--scrollbar-width, 16px);
+      height: var(--scrollbar-height, 16px);
+    }
     display: flex;
     height: 45rem;
     width: 19rem;
     max-width: 20rem;
     flex-direction: column;
     gap: calc(var(--spacing) * 5);
+    overflow-y: scroll;
     border-radius: var(--radius-xl);
     background-color: var(--color-blue-800);
     padding: calc(var(--spacing) * 5);
+    --scrollbar-thumb: color-mix(in oklab, oklch(0.623 0.214 259.815) 50%, transparent);
     @media (width >= 48rem) {
       width: 23rem;
     }

@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
-from .models import Usuarios, Proyectos, miembros_proyecto
-from django.contrib.auth.decorators import login_required
+from .models import Usuarios, Proyectos, miembros_proyecto, tareas_proyecto, tareas as TareasDB, categorias, categorias_proyecto
 
 import re
 
@@ -28,7 +27,8 @@ def inicio(request):
                 
                 creador = miembros_proyecto(id_proyecto=proyecto, usuario=request.user, is_admin=True)
 
-            except:
+            except Exception as Err:
+                print(Err)
                 return render(request, 'inicio.html', {
                     'aviso': 'Hubo un problema con el servidor'
                 })
@@ -36,7 +36,13 @@ def inicio(request):
             proyecto.save()
             creador.save()
             
-            print(f'Creando Proyecto: {datos["NombreProyecto"]}')
+            for idCategoria in range(1,5):
+                
+                categoriaPredeterminada = categorias.objects.get(pk=idCategoria)
+                
+                CategoriaProyecto = categorias_proyecto(id_proyecto=proyecto, id_categoria=categoriaPredeterminada)
+                
+                CategoriaProyecto.save()
             
         else:
             return render(request, 'inicio.html', {
@@ -97,37 +103,206 @@ def Registro (request):
     
     return render(request, 'registro.html')
 
-@login_required
+
 def CerrarSesion (request):
+    
+    # Para que no entre a esta ruta si no esta logeado
+    if not request.user.is_authenticated:
+        
+        return redirect('Inicio')
+    
     logout(request)
     return redirect('Inicio')
 
 # Se Encarga Luis
-@login_required
-def TableroProyecto (request):
-    
-    return render(request, 'proyecto/tableros.html')
 
-@login_required
-def TableroEstadistica (request):
+def TableroProyecto (request, id_proyecto):
     
-    return render(request, 'proyecto/Estadisticas.html')
+    # Para que no entre a esta ruta si no esta logeado
+    if not request.user.is_authenticated:
+        
+        return redirect('Inicio')
+    
+    miembros = miembros_proyecto.objects.filter(id_proyecto=id_proyecto)
+    CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto)
+    tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
+    proyectoDB = Proyectos.objects.get(pk=id_proyecto)
+    miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
 
-@login_required
+    
+    if request.method == "POST":
+        
+        tipoPost = request.POST.get('tipoPost')
+        
+        datos = request.POST
+        
+        if tipoPost == "CrearTarea":
+            
+            print(datos)
+
+            if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['DescripcionTarea']):
+                return render(request, 'proyecto/tableros.html', {
+                    "id_proyecto": id_proyecto,
+                    'avisoTarea': 'Debe contener un nombre.',
+                    'categorias': CategoriasProyecto,
+                    'Tareas': tareas,
+                    'Proyecto': proyectoDB,
+                    'usuario': miembroAdmin,
+                    'miembros': miembros,
+                })
+                
+            if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['DescripcionTarea']):
+                return render(request, 'proyecto/tableros.html', {
+                    "id_proyecto": id_proyecto,
+                    'miembros': miembros,
+                    'categorias': CategoriasProyecto,
+                    'Tareas': tareas,
+                    'Proyecto': proyectoDB,
+                    'usuario': miembroAdmin,
+                    'avisoTarea': 'Debe contener una descripcion.'
+                })
+                
+            try:
+                
+                CategoriaDB = categorias.objects.get(pk=datos['CategoriaTarea'])
+                ProyectoDB = Proyectos.objects.get(pk=id_proyecto)
+                usuarioDB = Usuarios.objects.get(correo=datos['AsignacionTarea'])
+                
+                crearTarea = TareasDB(nombre=datos['TituloTarea'], descripcion=datos['DescripcionTarea'], prioridad=datos['PrioridadTarea'], categoria=CategoriaDB)
+                
+                tarea_proyectoDB = tareas_proyecto(id_tarea=crearTarea, id_proyecto=ProyectoDB, usuario=usuarioDB)
+                
+                crearTarea.save()
+                tarea_proyectoDB.save()
+                
+                print('tarea creada')
+            except Exception as Error:
+                
+                print(f"Error: {Error}")
+            
+
+    
+    return render(request, 'proyecto/tableros.html', {
+        "id_proyecto": id_proyecto,
+        'miembros': miembros,
+        'categorias': CategoriasProyecto,
+        'Tareas': tareas,
+        'Proyecto': proyectoDB,
+        'usuario': miembroAdmin,
+    })
+
+
+def TableroEstadistica (request, id_proyecto):
+    print(id_proyecto)
+    
+    return render(request, 'proyecto/Estadisticas.html', {
+        "id_proyecto": id_proyecto
+    })
+
+def EditarTareaProyecto(request, id_proyecto, id_tarea):
+    
+    return render(request, 'proyecto/editarTarea.html', {
+        "id_proyecto": id_proyecto
+    })
+
 def Perfil(request):
     
-    return render(request, 'perfil.html')
+    
+    # Para que no entre a esta ruta si no esta logeado
+    if not request.user.is_authenticated:
+        
+        return redirect('Inicio')
+    
+    userProyectos = miembros_proyecto.objects.filter(usuario=request.user)
+    
+    # Para crear un Proyecto nuevo
+    if request.method == 'POST':
+        
+        
+        if not request.user.is_authenticated:
+            return render(request, 'perfil.html', {
+                'proyectos': userProyectos,
+                'admin': request.user.is_staff,
+            })
+        
+        datos = request.POST
+        
+        if re.fullmatch(r'^\s+|^\s*$', datos['NombreProyecto']):
+            return render(request, 'perfil.html', {
+                'proyectos': userProyectos,
+                'admin': request.user.is_staff,
+                'aviso': 'No se puede crear con solamente espacios'
+            })
+        
+        if re.fullmatch('^[a-zA-Z0-9\s]{3,}$', datos['NombreProyecto']):
+            
+            try:
+                proyecto = Proyectos(nombre=datos['NombreProyecto'])
+                
+                creador = miembros_proyecto(id_proyecto=proyecto, usuario=request.user, is_admin=True)
 
-@login_required
+            except:
+                return render(request, 'perfil.html', {
+                    'proyectos': userProyectos,
+                    'admin': request.user.is_staff,
+                    'aviso': 'Hubo un problema con el servidor'
+                })
+            
+            proyecto.save()
+            creador.save()
+            
+            for idCategoria in range(1,5):
+                
+                categoriaPredeterminada = categorias.objects.get(pk=idCategoria)
+                
+                CategoriaProyecto = categorias_proyecto(id_proyecto=proyecto, id_categoria=categoriaPredeterminada)
+                
+                CategoriaProyecto.save()
+            
+        else:
+            return render(request, 'perfil.html', {
+                'proyectos': userProyectos,
+                'admin': request.user.is_staff,
+                'aviso': 'Solamente letras, numeros y espacio'
+            })
+    
+        
+    
+    
+    return render(request, 'perfil.html', {
+        'proyectos': userProyectos,
+        'admin': request.user.is_staff,
+    })
+
+
+
+
 def PanelAdmin(request):
+    
+    # Para que no entre a esta ruta si no esta logeado
+    if not request.user.is_authenticated:
+        
+        return redirect('Inicio')
+    
     return render(request, 'admin.html')
 
 # Se encarga Miguel
-@login_required
+
 def ProyectosAdmin(request):
+    
+    # Para que no entre a esta ruta si no esta logeado
+    if not request.user.is_authenticated:
+        
+        return redirect('Inicio')
     
     return render(request, 'admin/ProyectosAdmin.html')
 
-@login_required
+
 def UsuariosAdmin(request):
+    
+    # Para que no entre a esta ruta si no esta logeado
+    if not request.user.is_authenticated:
+        
+        return redirect('Inicio')
+    
     return render(request, 'admin/UsuariosAdmin.html')

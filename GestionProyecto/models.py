@@ -101,13 +101,11 @@ class tareas(models.Model):
     ]
     
     id_tarea = models.AutoField(primary_key=True)
-    id_proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     prioridad = models.CharField(max_length=5, choices=OPCIONES_PRIORIDAD)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_modificacion = models.DateTimeField(auto_now=True)
-    fecha_vencimiento = models.DateTimeField()
     categoria = models.ForeignKey(categorias, on_delete=models.CASCADE)
 
 class tareas_proyecto(models.Model):
