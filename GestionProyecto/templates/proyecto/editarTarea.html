@@ -24,4 +24,71 @@
 {%  endblock opcionesMenu %}
 
 {% block tabProyectos %}
+
+
+<div class="w-full h-[calc(100%-3.75rem)] md:pl-30 text-white flex items-center justify-center">
+
+    <div class="bg-blue-900 w-[22rem] h-max rounded-md flex flex-col items-center justify-center gap-5 p-5">
+        
+        <h2 class="font-bold text-3xl">Editar Tarea</h2>
+
+        <form method="post" class="flex flex-col items-center justify-center gap-3 w-full">
+
+            {% csrf_token %}
+
+            {% if avisoTarea %}
+
+                <span class="font-bold text-red-500">{{ avisoTarea }}</span>
+                
+            {% endif %}
+
+            <label class="flex flex-col font-semibold text-[17px] gap-2 w-full">
+                Título
+                <input name='TituloTarea' class="inputStyle" type="text" value="{{datosTarea.nombre}}" required>
+            </label>
+
+            <label class="flex flex-col font-semibold text-[17px] w-full">
+                Descripción
+                <textarea name='DescripcionTarea' class="inputStyle min-h-27 max-h-27" required>{{datosTarea.descripcion}}</textarea>
+            </label>
+
+            <label class="flex flex-col font-semibold text-[17px] gap-2 w-full">
+                Estado
+                <select name='CategoriaTarea' class="inputStyle" required>
+                    {% for categoria in categorias %}
+                        <option class="opcionesSelect" value={{ categoria.id_categoria.pk }} {% if categoria.id_categoria.nombre == datosTarea.categoria.nombre %}selected{% endif %}>{{ categoria.id_categoria.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label class="flex flex-col font-semibold text-[17px] gap-2 w-full">
+                Prioridad
+                <select name='PrioridadTarea' class="inputStyle" required>
+                    <option class="opcionesSelect" value="BAJA" {% if datosTarea.prioridad == 'BAJA' %}selected{% endif %}>Baja</option>
+                    <option class="opcionesSelect" value="MEDIA" {% if datosTarea.prioridad == 'MEDIA' %}selected{% endif %}>Media</option>
+                    <option class="opcionesSelect" value="ALTA" {% if datosTarea.prioridad == 'ALTA' %}selected{% endif %}>Alta</option>
+                </select>
+            </label>
+
+            <label class="flex flex-col font-semibold text-[17px] gap-2 w-full">
+                Asignado a
+                <select name='AsignacionTarea' class="inputStyle" required>
+                    {% for miembro in miembros %}
+                        <option class="opcionesSelect" value="{{ miembro.usuario.correo }}" {% if miembro.usuario.correo == miembroAsignado.correo %}selected{% endif %}>{{ miembro.usuario.nombre }} {{ miembro.usuario.apellido }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            
+            <button class="botonStyle">Editar</button>
+        </form>
+        <div class="flex w-full gap-5">
+            <a href="{% url 'EliminarTarea' datosTarea.pk id_proyecto %}" class="botonStyle bg-red-400 text-center">Eliminar</a>
+            <a href="{% url "ProyectoTablero" id_proyecto %}" class="botonStyle text-center">Cancelar</a>
+        </div>
+    </div>
+
+</div>
+
+
 {% endblock tabProyectos %}

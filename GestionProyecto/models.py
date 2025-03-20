@@ -91,6 +91,7 @@ class categorias_proyecto(models.Model):
     
     id_proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE)
     id_categoria = models.ForeignKey(categorias, on_delete=models.CASCADE)
+    indice = models.IntegerField()
     
 class tareas(models.Model):
     

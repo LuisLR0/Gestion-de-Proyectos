@@ -82,20 +82,35 @@
         <div class="w-screen h-screen bg-black/30 flex items-center justify-center">
     
             <div class="bg-blue-900 w-[22rem] h-[30rem] rounded-md flex flex-col items-center justify-around gap-5 p-10">
+                
+                <div class="flex flex-col gap-3">
 
-                <h2 class="font-bold text-2xl">Opciones Proyecto</h2>
+                    <h2 class="font-bold text-2xl">Opciones Proyecto</h2>
 
-                <form class="flex flex-col items-center justify-center gap-4 w-full">
+                    {% if avisoOpcion %}
+    
+                        <span class="font-bold text-red-500">{{ avisoOpcion }}</span>
+                        
+                    {% endif %}
+
+                </div>
+
+                <form method="post" class="flex flex-col items-center justify-center gap-4 w-full">
+
+                    {% csrf_token %}
+
+                    <input class="hidden" type="hidden" name='tipoPost' value='actualizarNombreProyecto' >
+
                     <label class="flex flex-col font-semibold text-lg gap-3 w-full">
                         Nombre del Proyecto
-                        <input class="inputStyle" placeholder="Proyecto Trayecto 3" type="text">
+                        <input name="NombreProyecto" value="{{ Proyecto.nombre }}" class="inputStyle" placeholder="Proyecto Trayecto 3" type="text">
                     </label>
 
                     <button class="botonStyle" onclick="closeModalOpcion()">Actualizar</button>
                 </form>
 
                 <div class="flex flex-col items-center justify-center gap-3">
-                    <button class="botonStyle bg-red-500" onclick="closeModalOpcion()">Eliminar</button>
+                    <a href="{% url 'EliminarProyecto' id_proyecto %}" class="botonStyle bg-red-500 text-center" >Eliminar</a>
                     <button class="botonStyle" onclick="closeModalOpcion()">Close</button>
                 </div>
             </div>

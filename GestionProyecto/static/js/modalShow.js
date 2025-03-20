@@ -95,6 +95,18 @@ const closeModalAgregarAdmin = () => {
     openScrollModals()
 }
 
+// Para abrir y cerrar modal de Opciones de columnas
+const openModalOpcionesColumna = () => {
+    document.getElementById("modalOpcionesColumna").classList.remove("hidden")
+    closeScrollModals()
+    CheckedHambur.checked = false
+}
+
+const closeModalOpcionesColumna = () => {
+    document.getElementById("modalOpcionesColumna").classList.add("hidden")
+    openScrollModals()
+}
+
 // Para abrir y cerrar modal de Crear Proyecto
 const openModalCrearProyecto = () => {
     document.getElementById("modalCrearProyecto").classList.remove("hidden")
@@ -106,3 +118,5 @@ const closeModalCrearProyecto = () => {
     document.getElementById("modalCrearProyecto").classList.add("hidden")
     openScrollModals()
 }
+
+

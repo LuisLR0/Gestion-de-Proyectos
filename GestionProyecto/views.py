@@ -40,7 +40,7 @@ def inicio(request):
                 
                 categoriaPredeterminada = categorias.objects.get(pk=idCategoria)
                 
-                CategoriaProyecto = categorias_proyecto(id_proyecto=proyecto, id_categoria=categoriaPredeterminada)
+                CategoriaProyecto = categorias_proyecto(id_proyecto=proyecto, id_categoria=categoriaPredeterminada, indice=idCategoria)
                 
                 CategoriaProyecto.save()
             
@@ -124,7 +124,7 @@ def TableroProyecto (request, id_proyecto):
         return redirect('Inicio')
     
     miembros = miembros_proyecto.objects.filter(id_proyecto=id_proyecto)
-    CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto)
+    CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto).order_by('indice')
     tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
     proyectoDB = Proyectos.objects.get(pk=id_proyecto)
     miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
@@ -137,8 +137,6 @@ def TableroProyecto (request, id_proyecto):
         datos = request.POST
         
         if tipoPost == "CrearTarea":
-            
-            print(datos)
 
             if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['DescripcionTarea']):
                 return render(request, 'proyecto/tableros.html', {
@@ -179,6 +177,85 @@ def TableroProyecto (request, id_proyecto):
             except Exception as Error:
                 
                 print(f"Error: {Error}")
+        
+        elif tipoPost == "CrearColumna":
+
+            if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['NombreColumna']):
+                return render(request, 'proyecto/tableros.html', {
+                    "id_proyecto": id_proyecto,
+                    'miembros': miembros,
+                    'categorias': CategoriasProyecto,
+                    'Tareas': tareas,
+                    'Proyecto': proyectoDB,
+                    'usuario': miembroAdmin,
+                    'avisoColumna': 'Debe contener una Nombre.'
+                })
+                
+            
+            numerosCategorias = None
+            
+            try:
+                numerosCategorias = [
+                    categoria.indice for categoria in categorias_proyecto.objects.filter(id_proyecto_id=id_proyecto)
+                ]
+            except:
+                pass
+            
+            indice = max(numerosCategorias) + 1 if numerosCategorias else 1
+                
+            categoriaNueva = None
+            
+            try:
+                
+                categoriaNueva = categorias.objects.get(nombre=datos['NombreColumna'])
+                CategoriaProyecto = categorias_proyecto(id_proyecto_id=id_proyecto, id_categoria=categoriaNueva, indice=indice)
+                
+            except categorias.DoesNotExist:
+                
+                categoriaNueva = categorias(nombre=datos['NombreColumna'])
+                CategoriaProyecto = categorias_proyecto(id_proyecto_id=id_proyecto, id_categoria=categoriaNueva, indice=indice)
+                
+                
+            except Exception as Error:
+                print(f"Error: {Error}")
+            
+            if categoriaNueva:
+                categoriaNueva.save()
+                CategoriaProyecto.save()
+                
+        elif tipoPost == "actualizarNombreProyecto":
+            
+            print(datos)
+            
+            if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['NombreProyecto']):
+                return render(request, 'proyecto/tableros.html', {
+                    "id_proyecto": id_proyecto,
+                    'miembros': miembros,
+                    'categorias': CategoriasProyecto,
+                    'Tareas': tareas,
+                    'Proyecto': proyectoDB,
+                    'usuario': miembroAdmin,
+                    'avisoOpcion': 'Debe contener una Nombre.'
+                })
+                
+            try:
+                
+                nombreProyecto = Proyectos.objects.get(pk=id_proyecto)
+                
+                nombreProyecto.nombre = datos['NombreProyecto']
+                
+                nombreProyecto.save()
+                
+                return redirect('ProyectoTablero', id_proyecto)
+            
+            except Exception as Error:
+                print(f"Error: {Error}")
+                
+        elif tipoPost == "IndiceColumna":
+            CategoriaIndice = categorias_proyecto.objects.get(pk=datos['idCategoriaProyecto'])
+            CategoriaIndice.indice = datos['indiceCategoria']
+            CategoriaIndice.save()
+            
             
 
     
@@ -198,11 +275,132 @@ def TableroEstadistica (request, id_proyecto):
     return render(request, 'proyecto/Estadisticas.html', {
         "id_proyecto": id_proyecto
     })
+    
+def EliminarCategoriaProyecto(request, id_categoria, id_proyecto):
+    try:
+        miembro = miembros_proyecto.objects.get(id_proyecto_id=id_proyecto, usuario=request.user)
+    except:
+        return redirect('Inicio')
+
+    
+    
+    CategoriaIndice = categorias_proyecto.objects.get(pk=id_categoria)
+    CategoriaIndice.delete()
+    
+    return redirect('ProyectoTablero', id_proyecto)
+    
+    
+def EliminarProyecto(request, id_proyecto):
+    # No se pueda usar si no es admin del proyecto
+    miembros = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
+    if not miembros.is_admin:
+        return redirect('Inicio')
+    
+    
+    proyectoEliminar = Proyectos.objects.get(pk=id_proyecto)
+    
+    
+    proyectoEliminar.delete()
+    
+    return redirect('Inicio')
+
+def EliminarTarea(request, id_tarea, id_proyecto):
+    
+    tareaEliminar = TareasDB.objects.get(id_tarea=id_tarea)
+    
+    tareaEliminar.delete()
+    
+    miembros = miembros_proyecto.objects.filter(id_proyecto=id_proyecto)
+    CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto)
+    ProyectoDB = Proyectos.objects.get(pk=id_proyecto)
+    tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
+    miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
+    
+    return render(request, 'proyecto/tableros.html', {
+        "id_proyecto": id_proyecto,
+        'miembros': miembros,
+        'categorias': CategoriasProyecto,
+        'Tareas': tareas,
+        'Proyecto': ProyectoDB,
+        'usuario': miembroAdmin,
+    })
 
 def EditarTareaProyecto(request, id_proyecto, id_tarea):
     
+    tareaProyecto = tareas_proyecto.objects.get(id_proyecto=id_proyecto, id_tarea=id_tarea)
+    miembros = miembros_proyecto.objects.filter(id_proyecto=id_proyecto)
+    CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto)
+    
+    datos = None
+    
+    if request.method == "POST":
+        
+        
+        datos = request.POST
+            
+        print(datos)
+
+        if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['DescripcionTarea']):
+            return render(request, 'proyecto/tableros.html', {
+                'avisoTarea': 'Debe contener un nombre.',
+                "id_proyecto": id_proyecto,
+                "datosTarea": tareaProyecto.id_tarea,
+                "miembroAsignado": tareaProyecto.usuario,
+                "miembros": miembros,
+                "categorias": CategoriasProyecto,
+            })
+            
+        if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['DescripcionTarea']):
+            return render(request, 'proyecto/tableros.html', {
+                "id_proyecto": id_proyecto,
+                "datosTarea": tareaProyecto.id_tarea,
+                "miembroAsignado": tareaProyecto.usuario,
+                "miembros": miembros,
+                "categorias": CategoriasProyecto,
+                'avisoTarea': 'Debe contener una descripcion.'
+            })
+            
+        try:
+            
+            CategoriaDB = categorias.objects.get(pk=datos['CategoriaTarea'])
+            usuarioDB = Usuarios.objects.get(correo=datos['AsignacionTarea'])
+            
+            TareaActualizar = TareasDB.objects.get(pk=id_tarea)
+            Tarea_ProyectoActualizar = tareas_proyecto.objects.get(id_tarea=id_tarea)
+            
+            TareaActualizar.nombre = datos['TituloTarea']
+            TareaActualizar.descripcion = datos['DescripcionTarea']
+            TareaActualizar.prioridad = datos['PrioridadTarea']
+            TareaActualizar.categoria = CategoriaDB
+            
+            Tarea_ProyectoActualizar.usuario = usuarioDB
+            
+            
+            TareaActualizar.save()
+            Tarea_ProyectoActualizar.save() 
+            
+            ProyectoDB = Proyectos.objects.get(pk=id_proyecto)
+            tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
+            miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
+            
+            return render(request, 'proyecto/tableros.html', {
+                "id_proyecto": id_proyecto,
+                'miembros': miembros,
+                'categorias': CategoriasProyecto,
+                'Tareas': tareas,
+                'Proyecto': ProyectoDB,
+                'usuario': miembroAdmin,
+            })
+        except Exception as Error:
+            
+            print(f"Error: {Error}")
+
     return render(request, 'proyecto/editarTarea.html', {
-        "id_proyecto": id_proyecto
+        "id_proyecto": id_proyecto,
+        "datosTarea": tareaProyecto.id_tarea,
+        "miembroAsignado": tareaProyecto.usuario,
+        "miembros": miembros,
+        "categorias": CategoriasProyecto,
     })
 
 def Perfil(request):
@@ -255,7 +453,7 @@ def Perfil(request):
                 
                 categoriaPredeterminada = categorias.objects.get(pk=idCategoria)
                 
-                CategoriaProyecto = categorias_proyecto(id_proyecto=proyecto, id_categoria=categoriaPredeterminada)
+                CategoriaProyecto = categorias_proyecto(id_proyecto=proyecto, id_categoria=categoriaPredeterminada, indice=idCategoria)
                 
                 CategoriaProyecto.save()
             
