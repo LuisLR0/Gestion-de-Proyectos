@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
+from django.db.models import Count, Case, When, Value
 from .models import Usuarios, Proyectos, miembros_proyecto, tareas_proyecto, tareas as TareasDB, categorias, categorias_proyecto
 
 import re
@@ -127,8 +128,11 @@ def TableroProyecto (request, id_proyecto):
     CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto).order_by('indice')
     tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
     proyectoDB = Proyectos.objects.get(pk=id_proyecto)
-    miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
-
+    
+    try:
+        miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
+    except:
+        return redirect('Inicio')
     
     if request.method == "POST":
         
@@ -137,8 +141,10 @@ def TableroProyecto (request, id_proyecto):
         datos = request.POST
         
         if tipoPost == "CrearTarea":
+            
+            print(datos)
 
-            if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['DescripcionTarea']):
+            if not re.fullmatch("^[a-zA-Z0-9ñÑ\s]{1,}$", datos['DescripcionTarea']):
                 return render(request, 'proyecto/tableros.html', {
                     "id_proyecto": id_proyecto,
                     'avisoTarea': 'Debe contener un nombre.',
@@ -149,7 +155,7 @@ def TableroProyecto (request, id_proyecto):
                     'miembros': miembros,
                 })
                 
-            if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['DescripcionTarea']):
+            if not re.fullmatch("^[a-zA-Z0-9ñÑ\s]{1,}$", datos['DescripcionTarea']):
                 return render(request, 'proyecto/tableros.html', {
                     "id_proyecto": id_proyecto,
                     'miembros': miembros,
@@ -225,7 +231,17 @@ def TableroProyecto (request, id_proyecto):
                 
         elif tipoPost == "actualizarNombreProyecto":
             
-            print(datos)
+            if not miembroAdmin.is_admin:
+                return render(request, 'proyecto/tableros.html', {
+                    "id_proyecto": id_proyecto,
+                    'miembros': miembros,
+                    'categorias': CategoriasProyecto,
+                    'Tareas': tareas,
+                    'Proyecto': proyectoDB,
+                    'usuario': miembroAdmin,
+                })
+                
+            
             
             if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['NombreProyecto']):
                 return render(request, 'proyecto/tableros.html', {
@@ -256,6 +272,40 @@ def TableroProyecto (request, id_proyecto):
             CategoriaIndice.indice = datos['indiceCategoria']
             CategoriaIndice.save()
             
+        elif tipoPost == "invitarMiembro":
+            
+            if not miembroAdmin.is_admin:
+                return render(request, 'proyecto/tableros.html', {
+                    "id_proyecto": id_proyecto,
+                    'miembros': miembros,
+                    'categorias': CategoriasProyecto,
+                    'Tareas': tareas,
+                    'Proyecto': proyectoDB,
+                    'usuario': miembroAdmin,
+                })
+            
+            usuarioInvitar= None
+            
+            try:
+                
+                usuarioInvitar = Usuarios.objects.get(correo=datos['correoMiembro'])
+                
+            except:
+                # Aca va un aviso de que no se encontro el correo
+                return render(request, 'proyecto/tableros.html', {
+                    "id_proyecto": id_proyecto,
+                    'miembros': miembros,
+                    'categorias': CategoriasProyecto,
+                    'Tareas': tareas,
+                    'Proyecto': proyectoDB,
+                    'usuario': miembroAdmin,
+                    'avisoInvitar': 'No se encontro el correo.'
+                })
+            
+            if usuarioInvitar:
+                miembroInvitar = miembros_proyecto(id_proyecto_id=id_proyecto, usuario=usuarioInvitar)
+                miembroInvitar.save()
+            
             
 
     
@@ -270,12 +320,49 @@ def TableroProyecto (request, id_proyecto):
 
 
 def TableroEstadistica (request, id_proyecto):
-    print(id_proyecto)
+    
+    CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto).order_by('indice')
+    
+    tareas = {}
+    
+    for categoria in CategoriasProyecto:
+        tareas[f"{categoria.id_categoria.nombre}"] = tareas_proyecto.objects.filter(id_proyecto=id_proyecto).aggregate(
+            valor=Count(Case(When(id_tarea__categoria_id=categoria.id_categoria.pk, then=Value(1)))),
+        )
+    
+    tareasTotal = tareas_proyecto.objects.filter(id_proyecto=id_proyecto).count()
     
     return render(request, 'proyecto/Estadisticas.html', {
-        "id_proyecto": id_proyecto
+        "id_proyecto": id_proyecto,
+        'categorias': CategoriasProyecto,
+        'Tareas': tareas.items(),
+        'tareasTotal': tareasTotal,
     })
     
+def EliminarMiembroProyecto(request, id_miembro, id_proyecto):
+    try:
+        usuarioAdmin = miembros_proyecto.objects.get(id_proyecto_id=id_proyecto, usuario=request.user)
+    except:
+        return redirect('Inicio')
+    
+    if not usuarioAdmin.is_admin:
+        return redirect('Inicio')
+
+    try:
+        
+        MiembroEliminar = miembros_proyecto.objects.get(pk=id_miembro, id_proyecto_id=id_proyecto)
+        MiembroEliminar.delete()
+        
+    except Exception as Error:
+        
+        print(f"Error: {Error}")
+        return redirect('Inicio')
+    
+    return redirect('ProyectoTablero', id_proyecto)
+
+
+
+
 def EliminarCategoriaProyecto(request, id_categoria, id_proyecto):
     try:
         miembro = miembros_proyecto.objects.get(id_proyecto_id=id_proyecto, usuario=request.user)

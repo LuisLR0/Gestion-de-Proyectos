@@ -16,50 +16,39 @@
 
 {% block tabProyectos %}
 
-<main class="text-white md:h-[calc(100%-3.75rem)] md:overflow-y-hidden flex flex-col place-content-center md:place-content-baseline md:ml-30 scrollbar scrollbar-thumb-gray-700 p-5">
+<main class="text-white md:h-[calc(100%-3.75rem)] md:overflow-y-hidden flex flex-col gap-4 items-center place-content-center md:place-content-baseline md:ml-30 scrollbar scrollbar-thumb-gray-700 p-5">
 
     <h2 class="text-center text-2xl font-bold">Estadisticas del Proyecto</h2>
 
-    <section class="w-full p-5 grid gap-10 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+    <section class="w-full p-5 grid gap-10 md:grid-cols-2 lg:grid-cols-3 max-w-screen-lg">
 
+        {% for categoria in categorias %}
 
-        <div class="grid rounded-2xl overflow-hidden">
-            <div class="w-full h-20 bg-red-700 flex justify-center items-center">
-                <h2 class="font-semibold text-xl">Tareas Pendientes</h2>
+            <div class="grid rounded-2xl overflow-hidden">
+                <div class="w-full h-20 bg-blue-500 flex justify-center items-center">
+                    <h2 class="font-semibold text-xl">{{categoria.id_categoria.nombre}}</h2>
+                </div>
+                {% for tarea in Tareas %}
+                    {% if categoria.id_categoria.nombre == tarea.0 %}
+                        <article class="h-30 bg-blue-800 flex justify-center items-center">
+                            <h2 class="font-semibold text-4xl">{{tarea.1.valor}}</h2>
+                        </article>
+                    {% endif %}
+                {% endfor %}
             </div>
-            <article class="h-30 bg-blue-800 flex justify-center items-center">
-                <h2 class="font-semibold text-4xl" >234</h2>
-            </article>
-        </div>
 
-        <div class="grid rounded-2xl overflow-hidden">
-            <div class="w-full h-20 bg-amber-600 flex justify-center items-center">
-                <h2 class="font-semibold text-xl">Tareas En Proceso</h2>
-            </div>
-            <article class="h-30 bg-blue-800 flex justify-center items-center">
-                <h2 class="font-semibold text-4xl" >45</h2>
-            </article>
-        </div>
 
-        <div class="grid rounded-2xl overflow-hidden">
-            <div class="w-full h-20 bg-purple-600 flex justify-center items-center">
-                <h2 class="font-semibold text-xl">Tareas En Verificar</h2>
-            </div>
-            <article class="h-30 bg-blue-800 flex justify-center items-center">
-                <h2 class="font-semibold text-4xl" >105</h2>
-            </article>
-        </div>
-
-        <div class="grid rounded-2xl overflow-hidden">
-            <div class="w-full h-20 bg-green-700 flex justify-center items-center">
-                <h2 class="font-semibold text-xl">Tareas Finalizada</h2>
-            </div>
-            <article class="h-30 bg-blue-800 flex justify-center items-center">
-                <h2 class="font-semibold text-4xl" >34</h2>
-            </article>
-        </div>
+        {% endfor %}
 
     </section>
+
+    <h2 class="text-center text-2xl font-bold">Total de Tareas</h2>
+
+    <div class="grid rounded-2xl overflow-hidden">
+        <div class="w-50 h-20 bg-blue-500 flex justify-center items-center">
+            <h2 class="font-black text-4xl">{{tareasTotal}}</h2>
+        </div>
+    </div>
 
 </main>
 
