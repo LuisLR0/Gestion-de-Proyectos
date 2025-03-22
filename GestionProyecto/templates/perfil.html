@@ -54,14 +54,14 @@
                         </svg>                      
                     </figure>
                     <article class="ml-2">
-                        <h2 class="titulos md:text-center">Luis Lopez</h2>
+                        <h2 class="titulos md:text-center">{{usuario.nombre}} {{usuario.apellido}}</h2>
                         <div class="flex justify-center items-center gap-2">
                             <figure>
                                 <svg class="fill-white w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2m0 2v.511l-8 6.223-8-6.222V6zM4 18V9.044l7.386 5.745a.994.994 0 0 0 1.228 0L20 9.044 20.002 18z"/>
                                 </svg>                                  
                             </figure>
-                            <p>correo@gmail.com</p>
+                            <p>{{usuario.correo}}</p>
                         </div>
                     </article>
                 </div>
@@ -77,12 +77,12 @@
 
             <article class="w-full h-full bg-blue-800 rounded-lg p-5 space-y-4 md:col-start-2 md:col-end-3">
                 <h2 class="titulos">Proyectos</h2>
-                <p class="text-4xl font-black text-center">2</p>
+                <p class="text-4xl font-black text-center">{{totalProyectos}}</p>
             </article>
 
             <article class="w-full h-full bg-blue-800 rounded-lg p-5 space-y-4 md:col-start-2 md:col-end-3">
-                <h2 class="titulos">Tareas Pendientes</h2>
-                <p class="text-4xl font-black text-center">15</p>
+                <h2 class="titulos">Tareas Asignadas</h2>
+                <p class="text-4xl font-black text-center">{{totalTareas}}</p>
             </article>
 
 

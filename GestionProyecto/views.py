@@ -499,6 +499,10 @@ def Perfil(request):
         return redirect('Inicio')
     
     userProyectos = miembros_proyecto.objects.filter(usuario=request.user)
+    usuario = Usuarios.objects.get(correo=request.user)
+    
+    totalProyectos = miembros_proyecto.objects.filter(usuario=request.user).count()
+    totalTareas = tareas_proyecto.objects.filter(usuario_id=request.user).count()
     
     # Para crear un Proyecto nuevo
     if request.method == 'POST':
@@ -508,6 +512,9 @@ def Perfil(request):
             return render(request, 'perfil.html', {
                 'proyectos': userProyectos,
                 'admin': request.user.is_staff,
+                'usuario': usuario,
+                'totalProyectos': totalProyectos,
+                'totalTareas': totalTareas,
             })
         
         datos = request.POST
@@ -516,6 +523,9 @@ def Perfil(request):
             return render(request, 'perfil.html', {
                 'proyectos': userProyectos,
                 'admin': request.user.is_staff,
+                'usuario': usuario,
+                'totalProyectos': totalProyectos,
+                'totalTareas': totalTareas,
                 'aviso': 'No se puede crear con solamente espacios'
             })
         
@@ -530,6 +540,9 @@ def Perfil(request):
                 return render(request, 'perfil.html', {
                     'proyectos': userProyectos,
                     'admin': request.user.is_staff,
+                    'usuario': usuario,
+                    'totalProyectos': totalProyectos,
+                    'totalTareas': totalTareas,
                     'aviso': 'Hubo un problema con el servidor'
                 })
             
@@ -548,6 +561,9 @@ def Perfil(request):
             return render(request, 'perfil.html', {
                 'proyectos': userProyectos,
                 'admin': request.user.is_staff,
+                'usuario': usuario,
+                'totalProyectos': totalProyectos,
+                'totalTareas': totalTareas,
                 'aviso': 'Solamente letras, numeros y espacio'
             })
     
@@ -557,6 +573,9 @@ def Perfil(request):
     return render(request, 'perfil.html', {
         'proyectos': userProyectos,
         'admin': request.user.is_staff,
+        'usuario': usuario,
+        'totalProyectos': totalProyectos,
+        'totalTareas': totalTareas,
     })
 
 
