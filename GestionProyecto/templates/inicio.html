@@ -79,37 +79,58 @@
 <main class="h-max text-white flex flex-col items-center px-7 py-10">
     {% if user.is_authenticated %}
 
-    <section id="proyectos" class="w-full">
-        <h3 class="text-4xl font-bold text-center mb-10">Tus Proyectos</h3>
-
-        <article class="grid my-5 gap-15 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-
-            {% for proyecto in proyectos %}
-
+        <section id="proyectos" class="w-full">
+            <h3 class="text-4xl font-bold text-center mb-10">Tus Proyectos</h3>
+            
+            <article class="grid my-5 gap-15 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                
+                {% for proyecto in proyectos %}
+                
                 <div class="bg-blue-800 w-full h-max rounded-2xl p-5">
-                    <h4 class="text-xl font-bold mb-5">{{ proyecto.id_proyecto.nombre }}</h4>
+                        <h4 class="text-xl font-bold mb-5">{{ proyecto.id_proyecto.nombre }}</h4>
+                        
+                        {% for datos in datosProyecto %}
+                            {% if proyecto.id_proyecto == datos.0 %}
+                                <span class="text-lg font-medium">Tareas: <strong>{{datos.1.TareasTotal}}</strong> </span>
+                                <p class="text-lg font-medium">Miembros: <strong>{{datos.1.MiembrosTotal}}</strong> </p>
+                            {% endif %}
+                        {% endfor %}
 
-                    <span class="text-lg font-medium">Tareas Pendientes: <strong>234</strong> </span>
-                    <p class="text-lg font-medium">Miembros: <strong>3</strong> </p>
-
-                    <div class="w-full flex flex-row-reverse">
-                        <a href='{% url "ProyectoTablero" proyecto.id_proyecto.id_proyecto %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>
+                        <div class="w-full flex flex-row-reverse">
+                            <a href='{% url "ProyectoTablero" proyecto.id_proyecto.id_proyecto %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>
+                        </div>
                     </div>
+
+                {% endfor %}
+
+    
+                <div onclick="openModalCrearProyecto()" class="bg-blue-800 cursor-pointer select-none w-full h-max rounded-2xl p-5 flex flex-col justify-center items-center">
+                    <h4 class="text-2xl font-bold mb-5">Crea tu Proyecto</h4>
+                    <figure>
+                        <svg class="fill-white w-30 h-30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M20 2H8c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2m-2 9h-3v3h-2v-3h-3V9h3V6h2v3h3zM4 22h12v-2H4V8H2v12c0 1.103.897 2 2 2"/>
+                        </svg>                      
+                    </figure>
                 </div>
 
-            {% endfor %}
- 
-            <div onclick="openModalCrearProyecto()" class="bg-blue-800 cursor-pointer select-none w-full h-max rounded-2xl p-5 flex flex-col justify-center items-center">
-                <h4 class="text-2xl font-bold mb-5">Crea tu Proyecto</h4>
-                <figure>
-                    <svg class="fill-white w-30 h-30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M20 2H8c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2m-2 9h-3v3h-2v-3h-3V9h3V6h2v3h3zM4 22h12v-2H4V8H2v12c0 1.103.897 2 2 2"/>
-                    </svg>                      
-                </figure>
-            </div>
+            </article>
+        </section>
+    
+    {% else %}
 
-        </article>
-    </section>
+        <section id="proyectos" class="w-full max-w-screen-lg">
+            <h3 class="text-3xl font-bold text-center mb-10">Colabora y Conquista</h3>
+            <article class="grid md:grid-flow-col auto-rows-[1fr_1fr_7rem] md:auto-rows-[1fr_5rem] auto-cols-fr place-items-center gap-5 md:gap-20 md:p-10">
+                <figure class="w-full h-[15rem] sombraPanels md:col-start-2">
+                    <img class="select-none pointer-events-none w-full h-full object-fill" src="{% static 'img/Capture.png' %}" alt="">
+                </figure>
+                <p class="text-xl text-center">Con nuestra plataforma, podrás visualizar el avance de tus proyectos de forma clara y sencilla. Mantén a tu equipo sincronizado, optimiza los recursos y asegura el cumplimiento de los objetivos.</p>
+                <div class="flex flex-col md:flex-row gap-10 md:col-start-1 md:col-end-3 md:row-start-2">
+                    <a class="botonStyle text-center" href="{% url "Login" %}">Login</a>
+                    <a class="botonStyle text-center" href="{% url "Registro" %}">Registro</a>
+                </div>
+            </article>
+        </section>
 
     {% endif %}
 </main>

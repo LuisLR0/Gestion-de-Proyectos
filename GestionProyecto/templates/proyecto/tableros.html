@@ -195,9 +195,8 @@
                     {% for tarea in Tareas %}
     
                         {% if tarea.id_tarea.categoria == categoria.id_categoria %}
-                            
-                            <div class="bg-blue-500 h-auto w-full rounded-2xl p-3 flex flex-col justify-between gap-2">
-                                <div class=" grid grid-flow-col justify-between ">
+                            <div data-tarea-id="{{ tarea.id_tarea }}" class="bg-blue-500 h-auto w-full rounded-2xl p-3 flex flex-col justify-between gap-2">
+                                <div class=" grid grid-flow-col gap-2 justify-between ">
                                     <h2 class="titulos">{{ tarea.id_tarea.nombre }}</h2>
                                     <div class="w-7 h-7 relative select-none">
                 

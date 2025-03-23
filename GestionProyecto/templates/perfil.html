@@ -98,8 +98,12 @@
                         <div class="bg-blue-900 w-full h-max rounded-2xl p-5 sombraPanels">
                             <h4 class="text-xl font-bold mb-5">{{ proyecto.id_proyecto.nombre }}</h4>
 
-                            <span class="text-lg font-medium">Tareas Pendientes: <strong>234</strong> </span>
-                            <p class="text-lg font-medium">Miembros: <strong>3</strong> </p>
+                            {% for datos in datosProyecto %}
+                                {% if proyecto.id_proyecto == datos.0 %}
+                                    <span class="text-lg font-medium">Tareas: <strong>{{datos.1.TareasTotal}}</strong> </span>
+                                    <p class="text-lg font-medium">Miembros: <strong>{{datos.1.MiembrosTotal}}</strong> </p>
+                                {% endif %}
+                            {% endfor %}
 
                             <div class="w-full flex flex-row-reverse">
                                 <a href='{% url "ProyectoTablero" proyecto.id_proyecto.id_proyecto %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>

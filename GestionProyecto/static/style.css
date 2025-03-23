@@ -518,6 +518,12 @@
   }
 }
 @layer utilities {
+  .pointer-events-none {
+    pointer-events: none;
+  }
+  .collapse {
+    visibility: collapse;
+  }
   .fixed {
     position: fixed;
   }
@@ -563,6 +569,9 @@
   .mb-10 {
     margin-bottom: calc(var(--spacing) * 10);
   }
+  .mb-20 {
+    margin-bottom: calc(var(--spacing) * 20);
+  }
   .ml-2 {
     margin-left: calc(var(--spacing) * 2);
   }
@@ -604,6 +613,15 @@
   .hidden {
     display: none;
   }
+  .inline-flex {
+    display: inline-flex;
+  }
+  .list-item {
+    display: list-item;
+  }
+  .table {
+    display: table;
+  }
   .h-5 {
     height: calc(var(--spacing) * 5);
   }
@@ -642,6 +660,15 @@
   }
   .h-\[5rem\] {
     height: 5rem;
+  }
+  .h-\[10rem\] {
+    height: 10rem;
+  }
+  .h-\[15rem\] {
+    height: 15rem;
+  }
+  .h-\[20rem\] {
+    height: 20rem;
   }
   .h-\[30rem\] {
     height: 30rem;
@@ -727,8 +754,17 @@
   .max-w-screen-lg {
     max-width: var(--breakpoint-lg);
   }
+  .border-collapse {
+    border-collapse: collapse;
+  }
+  .transform {
+    transform: var(--tw-rotate-x) var(--tw-rotate-y) var(--tw-rotate-z) var(--tw-skew-x) var(--tw-skew-y);
+  }
   .cursor-pointer {
     cursor: pointer;
+  }
+  .resize {
+    resize: both;
   }
   .auto-cols-\[1fr_2rem\] {
     grid-auto-columns: 1fr 2rem;
@@ -736,11 +772,32 @@
   .auto-cols-\[1fr_4rem_2rem\] {
     grid-auto-columns: 1fr 4rem 2rem;
   }
+  .auto-cols-\[1fr_10rem\] {
+    grid-auto-columns: 1fr 10rem;
+  }
   .auto-cols-fr {
     grid-auto-columns: minmax(0, 1fr);
   }
   .grid-flow-col {
     grid-auto-flow: column;
+  }
+  .auto-rows-\[1fr_1fr_5rem\] {
+    grid-auto-rows: 1fr 1fr 5rem;
+  }
+  .auto-rows-\[1fr_1fr_7rem\] {
+    grid-auto-rows: 1fr 1fr 7rem;
+  }
+  .auto-rows-\[1fr_1fr_10rem\] {
+    grid-auto-rows: 1fr 1fr 10rem;
+  }
+  .auto-rows-\[1fr_1fr_20rem\] {
+    grid-auto-rows: 1fr 1fr 20rem;
+  }
+  .auto-rows-\[1fr_5rem\] {
+    grid-auto-rows: 1fr 5rem;
+  }
+  .auto-rows-\[1fr_10rem\] {
+    grid-auto-rows: 1fr 10rem;
   }
   .auto-rows-fr {
     grid-auto-rows: minmax(0, 1fr);
@@ -771,6 +828,9 @@
   }
   .justify-center {
     justify-content: center;
+  }
+  .gap-1 {
+    gap: calc(var(--spacing) * 1);
   }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
@@ -835,9 +895,19 @@
   .rounded-xl {
     border-radius: var(--radius-xl);
   }
+  .border {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+  }
   .border-b-2 {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 2px;
+  }
+  .bg-amber-300 {
+    background-color: var(--color-amber-300);
+  }
+  .bg-black {
+    background-color: var(--color-black);
   }
   .bg-black\/30 {
     background-color: color-mix(in oklab, var(--color-black) 30%, transparent);
@@ -872,8 +942,20 @@
   .fill-white {
     fill: var(--color-white);
   }
+  .object-contain {
+    object-fit: contain;
+  }
   .object-cover {
     object-fit: cover;
+  }
+  .object-fill {
+    object-fit: fill;
+  }
+  .object-center {
+    object-position: center;
+  }
+  .object-left {
+    object-position: left;
   }
   .p-2 {
     padding: calc(var(--spacing) * 2);
@@ -919,6 +1001,9 @@
   }
   .text-center {
     text-align: center;
+  }
+  .text-justify {
+    text-align: justify;
   }
   .text-2xl {
     font-size: var(--text-2xl);
@@ -975,8 +1060,18 @@
   .text-white {
     color: var(--color-white);
   }
+  .underline {
+    text-decoration-line: underline;
+  }
+  .outline {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
+  }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
+  .scrollbar-thumb-blue-900 {
+    --scrollbar-thumb: oklch(0.379 0.146 265.522);
   }
   .scrollbar-thumb-blue-900\/50 {
     --scrollbar-thumb: color-mix(in oklab, oklch(0.379 0.146 265.522) 50%, transparent);
@@ -1118,6 +1213,21 @@
       width: 23rem;
     }
   }
+  .md\:w-\[30\%\] {
+    @media (width >= 48rem) {
+      width: 30%;
+    }
+  }
+  .md\:w-\[80\%\] {
+    @media (width >= 48rem) {
+      width: 80%;
+    }
+  }
+  .md\:w-\[90\%\] {
+    @media (width >= 48rem) {
+      width: 90%;
+    }
+  }
   .md\:w-full {
     @media (width >= 48rem) {
       width: 100%;
@@ -1139,6 +1249,16 @@
   .md\:grid-flow-col {
     @media (width >= 48rem) {
       grid-auto-flow: column;
+    }
+  }
+  .md\:grid-flow-col-dense {
+    @media (width >= 48rem) {
+      grid-auto-flow: column dense;
+    }
+  }
+  .md\:auto-rows-\[1fr_5rem\] {
+    @media (width >= 48rem) {
+      grid-auto-rows: 1fr 5rem;
     }
   }
   .md\:grid-cols-2 {
@@ -1171,6 +1291,11 @@
       gap: calc(var(--spacing) * 0);
     }
   }
+  .md\:gap-10 {
+    @media (width >= 48rem) {
+      gap: calc(var(--spacing) * 10);
+    }
+  }
   .md\:gap-20 {
     @media (width >= 48rem) {
       gap: calc(var(--spacing) * 20);
@@ -1181,9 +1306,19 @@
       overflow-y: hidden;
     }
   }
+  .md\:object-cover {
+    @media (width >= 48rem) {
+      object-fit: cover;
+    }
+  }
   .md\:p-0 {
     @media (width >= 48rem) {
       padding: calc(var(--spacing) * 0);
+    }
+  }
+  .md\:p-10 {
+    @media (width >= 48rem) {
+      padding: calc(var(--spacing) * 10);
     }
   }
   .md\:pl-30 {
@@ -1330,6 +1465,31 @@
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
+@property --tw-rotate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: rotateX(0);
+}
+@property --tw-rotate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: rotateY(0);
+}
+@property --tw-rotate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: rotateZ(0);
+}
+@property --tw-skew-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: skewX(0);
+}
+@property --tw-skew-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: skewY(0);
+}
 @property --tw-space-y-reverse {
   syntax: "*";
   inherits: false;
@@ -1343,6 +1503,11 @@
 @property --tw-font-weight {
   syntax: "*";
   inherits: false;
+}
+@property --tw-outline-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
 }
 @property --tw-blur {
   syntax: "*";
@@ -1398,9 +1563,4 @@
   syntax: "*";
   inherits: false;
   initial-value: 1;
-}
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
 }

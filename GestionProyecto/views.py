@@ -54,14 +54,22 @@ def inicio(request):
         
         userProyectos = miembros_proyecto.objects.filter(usuario=request.user)
         
+        datosProyecto = {}
+        
+        for proy in userProyectos:
+            
+            datosProyecto[proy.id_proyecto] = {
+                'TareasTotal': tareas_proyecto.objects.filter(id_proyecto=proy.id_proyecto).count(), 
+                'MiembrosTotal': miembros_proyecto.objects.filter(id_proyecto=proy.id_proyecto).count(),
+            }
         
         return render(request, 'inicio.html', {
-            'proyectos': userProyectos
+            'proyectos': userProyectos,
+            'datosProyecto': datosProyecto.items(),
         })
     else:
         return render(request, 'inicio.html')
 
-# Se encarga Victor
 def Login (request):
     
     if request.user.is_authenticated:
@@ -85,7 +93,6 @@ def Login (request):
     
     return render(request, "login.html")
 
-# Se encarga Victor
 def Registro (request):
     
     if request.user.is_authenticated:
@@ -104,7 +111,6 @@ def Registro (request):
     
     return render(request, 'registro.html')
 
-
 def CerrarSesion (request):
     
     # Para que no entre a esta ruta si no esta logeado
@@ -114,8 +120,6 @@ def CerrarSesion (request):
     
     logout(request)
     return redirect('Inicio')
-
-# Se Encarga Luis
 
 def TableroProyecto (request, id_proyecto):
     
@@ -318,7 +322,6 @@ def TableroProyecto (request, id_proyecto):
         'usuario': miembroAdmin,
     })
 
-
 def TableroEstadistica (request, id_proyecto):
     
     CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto).order_by('indice')
@@ -360,23 +363,26 @@ def EliminarMiembroProyecto(request, id_miembro, id_proyecto):
     
     return redirect('ProyectoTablero', id_proyecto)
 
-
-
-
 def EliminarCategoriaProyecto(request, id_categoria, id_proyecto):
     try:
         miembro = miembros_proyecto.objects.get(id_proyecto_id=id_proyecto, usuario=request.user)
     except:
         return redirect('Inicio')
 
-    
+    tareas = tareas_proyecto.objects.filter(id_proyecto_id=id_proyecto)
     
     CategoriaIndice = categorias_proyecto.objects.get(pk=id_categoria)
+    
+    for tarea in tareas:
+        
+        if tarea.id_tarea.categoria == CategoriaIndice.id_categoria:
+            borrarTarea = tareas_proyecto.objects.get(pk=tarea.pk)
+            borrarTarea.delete()
+    
     CategoriaIndice.delete()
     
     return redirect('ProyectoTablero', id_proyecto)
-    
-    
+      
 def EliminarProyecto(request, id_proyecto):
     # No se pueda usar si no es admin del proyecto
     miembros = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
@@ -504,18 +510,18 @@ def Perfil(request):
     totalProyectos = miembros_proyecto.objects.filter(usuario=request.user).count()
     totalTareas = tareas_proyecto.objects.filter(usuario_id=request.user).count()
     
+    datosProyecto = {}
+        
+    for proy in userProyectos:
+        
+        datosProyecto[proy.id_proyecto] = {
+            'TareasTotal': tareas_proyecto.objects.filter(id_proyecto=proy.id_proyecto).count(), 
+            'MiembrosTotal': miembros_proyecto.objects.filter(id_proyecto=proy.id_proyecto).count(),
+        }
+        
+    
     # Para crear un Proyecto nuevo
     if request.method == 'POST':
-        
-        
-        if not request.user.is_authenticated:
-            return render(request, 'perfil.html', {
-                'proyectos': userProyectos,
-                'admin': request.user.is_staff,
-                'usuario': usuario,
-                'totalProyectos': totalProyectos,
-                'totalTareas': totalTareas,
-            })
         
         datos = request.POST
         
@@ -526,6 +532,7 @@ def Perfil(request):
                 'usuario': usuario,
                 'totalProyectos': totalProyectos,
                 'totalTareas': totalTareas,
+                'datosProyecto': datosProyecto.items(),
                 'aviso': 'No se puede crear con solamente espacios'
             })
         
@@ -543,6 +550,7 @@ def Perfil(request):
                     'usuario': usuario,
                     'totalProyectos': totalProyectos,
                     'totalTareas': totalTareas,
+                    'datosProyecto': datosProyecto.items(),
                     'aviso': 'Hubo un problema con el servidor'
                 })
             
@@ -557,6 +565,8 @@ def Perfil(request):
                 
                 CategoriaProyecto.save()
             
+            return redirect('Perfil')
+            
         else:
             return render(request, 'perfil.html', {
                 'proyectos': userProyectos,
@@ -564,6 +574,7 @@ def Perfil(request):
                 'usuario': usuario,
                 'totalProyectos': totalProyectos,
                 'totalTareas': totalTareas,
+                'datosProyecto': datosProyecto.items(),
                 'aviso': 'Solamente letras, numeros y espacio'
             })
     
@@ -576,6 +587,7 @@ def Perfil(request):
         'usuario': usuario,
         'totalProyectos': totalProyectos,
         'totalTareas': totalTareas,
+        'datosProyecto': datosProyecto.items(),
     })
 
 
@@ -590,8 +602,6 @@ def PanelAdmin(request):
     
     return render(request, 'admin.html')
 
-# Se encarga Miguel
-
 def ProyectosAdmin(request):
     
     # Para que no entre a esta ruta si no esta logeado
@@ -600,7 +610,6 @@ def ProyectosAdmin(request):
         return redirect('Inicio')
     
     return render(request, 'admin/ProyectosAdmin.html')
-
 
 def UsuariosAdmin(request):
     
