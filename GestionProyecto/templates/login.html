@@ -7,13 +7,22 @@
     <main class="bg-blue-950 h-screen w-screen p-5 flex items-center justify-center">
         <section class="bg-blue-800 flex flex-col items-center p-2 rounded-lg text-white h-max w-[30rem]">
             <a href="{% url "Inicio" %}" class="text-4xl font-black py-5 select-none">Soft Project</a>
-            <p class="font-semibold text-2xl">Iniciar Sesión</p>
+            <div class="flex flex-col gap-3">
+                
+                <p class="font-semibold text-2xl text-center">Iniciar Sesión</p>
+
+                {% if aviso %}
+
+                    <span class="font-bold text-red-500 text-center">{{ aviso }}</span>
+                    
+                {% endif %}
+
+            </div>
+            
 
             <form method="post" class="flex flex-col py-10 px-5 gap-7 w-full items-center">
                 {% csrf_token %}
-                {% if aviso %}
-                <span class="font-bold text-red-500">Correo o Contraseña Incorrecta!</span>
-                {% endif %}
+
                 <label class="w-full font-semibold">
                     Correo Electrónico
                     <input name="correo" required class="inputStyle" placeholder="correo@correo.com" type="email">

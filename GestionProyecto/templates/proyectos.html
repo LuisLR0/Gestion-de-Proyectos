@@ -103,10 +103,10 @@
 
                     <label class="flex flex-col font-semibold text-lg gap-3 w-full">
                         Nombre del Proyecto
-                        <input name="NombreProyecto" value="{{ Proyecto.nombre }}" class="inputStyle" placeholder="Proyecto Trayecto 3" type="text">
+                        <input required name="NombreProyecto" value="{{ Proyecto.nombre }}" class="inputStyle" type="text">
                     </label>
 
-                    <button class="botonStyle" onclick="closeModalOpcion()">Actualizar</button>
+                    <button class="botonStyle">Actualizar</button>
                 </form>
 
                 <div class="flex flex-col items-center justify-center gap-3">
@@ -198,4 +198,5 @@
 
 {% block scriptJS %}
     <script src="{% static 'js/modalShow.js' %}"></script>
+    <script src="{% static 'js/drawdrop.js' %}"></script>
 {% endblock scriptJS %}

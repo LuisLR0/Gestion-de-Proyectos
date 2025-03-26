@@ -4,54 +4,30 @@
 
 <h2 class="text-center text-2xl font-bold">Proyectos</h2>
 
+
 <article class="grid my-5 gap-15 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-
-    <div class="bg-blue-800 w-full h-max rounded-2xl p-5">
-        <h4 class="text-xl font-bold mb-5">Servicio de Transporte ServiExpress</h4>
-
-        <span class="text-lg font-medium">Tareas Pendientes: <strong>234</strong> </span>
-        <p class="text-lg font-medium">Miembros: <strong>3</strong> </p>
-
-        <div class="w-full flex flex-row-reverse">
-            <a href='{% url "ProyectoTablero" %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>
-        </div>
-    </div>
-
-    <div class="bg-blue-800 w-full h-max rounded-2xl p-5">
-        <h4 class="text-xl font-bold mb-5">Gestion de Proyectos SID3C</h4>
-
-        <span class="text-lg font-medium">Tareas Pendientes: <strong>234</strong> </span>
-        <p class="text-lg font-medium">Miembros: <strong>3</strong> </p>
-
-        <div class="w-full flex flex-row-reverse">
-            <a href='{% url "ProyectoTablero" %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>
-        </div>
-    </div>
-
-    <div class="bg-blue-800 w-full h-max rounded-2xl p-5">
-        <h4 class="text-xl font-bold mb-5">Proyecto Trayecto 3</h4>
-
-        <span class="text-lg font-medium">Tareas Pendientes: <strong>234</strong> </span>
-        <p class="text-lg font-medium">Miembros: <strong>3</strong> </p>
-
-        <div class="w-full flex flex-row-reverse">
-            <a href="{% url "ProyectoTablero" %}" class="botonStyle w-30 mt-5 text-center">Entrar</a>
-        </div>
-    </div>
-
-    <div class="bg-blue-800 w-full h-max rounded-2xl p-5">
-        <h4 class="text-xl font-bold mb-5">Proyecto Trayecto 4</h4>
-
-        <span class="text-lg font-medium">Tareas Pendientes: <strong>234</strong> </span>
-        <p class="text-lg font-medium">Miembros: <strong>3</strong> </p>
-
-        <div class="w-full flex flex-row-reverse">
-            <a href="{% url "ProyectoTablero" %}" class="botonStyle w-30 mt-5 text-center">Entrar</a>
-        </div>
-    </div>
-
     
+    {% for proyecto in proyectos %}
+    
+    <div class="bg-blue-800 w-full h-max rounded-2xl p-5">
+            <h4 class="text-xl font-bold mb-5">{{ proyecto.id_proyecto.nombre }}</h4>
+            
+
+            {% for datos in datosProyecto %}
+                {% if proyecto.id_proyecto == datos.0 %}
+                    <span class="text-lg font-medium">Tareas: <strong>{{datos.1.TareasTotal}}</strong> </span>
+                    <p class="text-lg font-medium">Miembros: <strong>{{datos.1.MiembrosTotal}}</strong> </p>
+                {% endif %}
+            {% endfor %}
+
+            <div class="w-full flex flex-row-reverse">
+                <a href='{% url "ProyectoTablero" proyecto.id_proyecto.id_proyecto %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>
+            </div>
+        </div>
+
+    {% endfor %}
 
 </article>
+
 
 {% endblock OpcionesAdmin %}   

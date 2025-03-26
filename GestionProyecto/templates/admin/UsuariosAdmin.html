@@ -10,16 +10,28 @@
 
         <div class="bg-blue-900 w-[22rem] h-[30rem] rounded-md flex flex-col items-center justify-around gap-5 p-10">
             
-            <h2 class="font-bold text-3xl">Agregar Administrador</h2>
+            <div class="flex flex-col gap-3">
+                
+                <h2 class="font-bold text-3xl">Agregar Administrador</h2>
 
-            <form class="flex flex-col items-center justify-around gap-4 w-full">
+                {% if aviso %}
+
+                    <span class="font-bold text-red-500">{{ aviso }}</span>
+                    
+                {% endif %}
+
+            </div>
+
+            <form method='post' class="flex flex-col items-center justify-around gap-4 w-full">
+
+                {% csrf_token %}
 
                 <label class="flex flex-col font-semibold text-lg gap-3 w-full">
                     Correo del Usuario
-                    <input class="inputStyle" type="email">
+                    <input name="correoAdmin" class="inputStyle" type="email" required>
                 </label>
 
-                <button class="botonStyle" onclick="closeModalAgregarAdmin()">Agregar</button>
+                <button class="botonStyle">Agregar</button>
             </form>
             <button class="botonStyle" onclick="closeModalAgregarAdmin()">Cancelar</button>
         </div>
@@ -29,37 +41,26 @@
 
 <button onclick="openModalAgregarAdmin()" class="botonStyle w-max mx-auto md:mx-0 my-10">Agregar Administrador</button>
 
-<article class="flex flex-col gap-10 max-w-screen-lg ">
+<article class="flex flex-col gap-10 md:w-[80rem] max-w-screen-lg">
 
-    <div class="grid auto-rows-fr auto-cols-fr md:grid-flow-col justify-between place-content-center place-items-center  w-full h-40 md:h-15 bg-blue-800 p-5 rounded-2xl sombraPanels">
-        <h2>Victor Ramirez</h2>
-        <p>Victor@correo.com</p>
-        <figure>
-            <svg class="fill-white w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8zm1 2h2v8H9zm4 0h2v8h-2z"/>
-            </svg>              
-        </figure>
-    </div>
+    {% for usuario in usuarios %}
+    
+        <div class="grid auto-rows-fr auto-cols-fr md:grid-flow-col justify-between place-content-center place-items-center h-40 md:h-15 bg-blue-800 p-5 rounded-2xl sombraPanels">
 
-    <div class="grid auto-rows-fr auto-cols-fr md:grid-flow-col justify-between place-content-center place-items-center  w-full h-40 md:h-15 bg-blue-800 p-5 rounded-2xl sombraPanels">
-        <h2>Luis Lopez</h2>
-        <p>Luis@correo.com</p>
-        <figure>
-            <svg class="fill-white w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8zm1 2h2v8H9zm4 0h2v8h-2z"/>
-            </svg>              
-        </figure>
-    </div>
+            <h2>{{usuario.nombre}} {{usuario.apellido}}</h2>
+            <p>{{usuario.correo}}</p>
+            {% if usuario != userLogin %}
+                <a href='{% url "PAdminDeleteUsuarios" usuario.correo %}' class="cursor-pointer">
+                    <svg class="fill-white w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8zm1 2h2v8H9zm4 0h2v8h-2z"/>
+                    </svg>              
+                </a>
+            {% endif %}
 
-    <div class="grid auto-rows-fr auto-cols-fr md:grid-flow-col justify-between place-content-center place-items-center  w-full h-40 md:h-15 bg-blue-800 p-5 rounded-2xl sombraPanels">
-        <h2>Francisco Cristhian Hernandez Guerrero</h2>
-        <p>Francisco_99@correo.com</p>
-        <figure>
-            <svg class="fill-white w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8zm1 2h2v8H9zm4 0h2v8h-2z"/>
-            </svg>              
-        </figure>
-    </div>
+        </div>
+
+    {% endfor %}
+
 
 
 </article>

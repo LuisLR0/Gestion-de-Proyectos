@@ -44,6 +44,7 @@ def inicio(request):
                 CategoriaProyecto = categorias_proyecto(id_proyecto=proyecto, id_categoria=categoriaPredeterminada, indice=idCategoria)
                 
                 CategoriaProyecto.save()
+ 
             
         else:
             return render(request, 'inicio.html', {
@@ -89,7 +90,7 @@ def Login (request):
         
         else:
             
-            return render(request, "login.html", {'aviso': True})
+            return render(request, "login.html", {'aviso': "Correo o Contraseña Incorrecta"})
     
     return render(request, "login.html")
 
@@ -102,12 +103,43 @@ def Registro (request):
     if request.method == 'POST':
         datos = request.POST
         
-        correo = datos['correo']
-        nombres = datos['nombres']
-        apellidos = datos['apellidos']
-        contraseña = datos['contraseña']
+        for indice, valor in datos.items():
         
-        Usuarios.objects.create_user(correo=correo, nombre=nombres, apellido=apellidos, password=contraseña)
+            if re.fullmatch(r'^\s+|^\s*$', valor):
+                return render(request, 'registro.html', {
+                    'aviso': "Comprueba de que ninguna campo contenga espacios."
+                })
+            
+        if not re.fullmatch(r'^[ñÑa-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', datos['correo']):
+            return render(request, 'registro.html', {
+                'aviso': "Correo Invalido"
+            })
+            
+        if not re.fullmatch(r'^[a-zA-ZñÑ\s]{3,}$', datos['nombres']):
+            return render(request, 'registro.html', {
+                'aviso': "Nombre Invalido"
+            })
+        if not re.fullmatch(r'^[a-zA-ZñÑ\s]{3,}$', datos['apellidos']):
+            return render(request, 'registro.html', {
+                'aviso': "Apellido Invalido"
+            })
+            
+        verifyCorreo = Usuarios.objects.filter(correo=datos['correo'])
+        
+        if verifyCorreo:
+            return render(request, 'registro.html', {
+                'aviso': "Correo ya registrado"
+            })
+        
+        try:
+            correo = datos['correo']
+            nombres = datos['nombres']
+            apellidos = datos['apellidos']
+            contraseña = datos['contraseña']
+            
+            # Usuarios.objects.create_user(correo=correo, nombre=nombres, apellido=apellidos, password=contraseña)
+        except:
+            return redirect('Registro')
     
     return render(request, 'registro.html')
 
@@ -133,10 +165,18 @@ def TableroProyecto (request, id_proyecto):
     tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
     proyectoDB = Proyectos.objects.get(pk=id_proyecto)
     
-    try:
-        miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
-    except:
-        return redirect('Inicio')
+    miembroAdmin = None
+    
+    if not request.user.is_staff:
+        
+        try:
+            miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
+        except:
+            return redirect('Inicio')
+    else:
+        miembroAdmin = {
+            'is_admin': True
+        }
     
     if request.method == "POST":
         
@@ -151,12 +191,12 @@ def TableroProyecto (request, id_proyecto):
             if not re.fullmatch("^[a-zA-Z0-9ñÑ\s]{1,}$", datos['DescripcionTarea']):
                 return render(request, 'proyecto/tableros.html', {
                     "id_proyecto": id_proyecto,
-                    'avisoTarea': 'Debe contener un nombre.',
                     'categorias': CategoriasProyecto,
                     'Tareas': tareas,
                     'Proyecto': proyectoDB,
                     'usuario': miembroAdmin,
                     'miembros': miembros,
+                    'avisoTarea': 'Debe contener un nombre.',
                 })
                 
             if not re.fullmatch("^[a-zA-Z0-9ñÑ\s]{1,}$", datos['DescripcionTarea']):
@@ -183,7 +223,7 @@ def TableroProyecto (request, id_proyecto):
                 crearTarea.save()
                 tarea_proyectoDB.save()
                 
-                print('tarea creada')
+                return redirect('ProyectoTablero', id_proyecto)
             except Exception as Error:
                 
                 print(f"Error: {Error}")
@@ -233,17 +273,20 @@ def TableroProyecto (request, id_proyecto):
                 categoriaNueva.save()
                 CategoriaProyecto.save()
                 
+                return redirect('ProyectoTablero', id_proyecto)
+                
         elif tipoPost == "actualizarNombreProyecto":
             
-            if not miembroAdmin.is_admin:
-                return render(request, 'proyecto/tableros.html', {
-                    "id_proyecto": id_proyecto,
-                    'miembros': miembros,
-                    'categorias': CategoriasProyecto,
-                    'Tareas': tareas,
-                    'Proyecto': proyectoDB,
-                    'usuario': miembroAdmin,
-                })
+            if not request.user.is_staff:
+                if not miembroAdmin.is_admin:
+                    return render(request, 'proyecto/tableros.html', {
+                        "id_proyecto": id_proyecto,
+                        'miembros': miembros,
+                        'categorias': CategoriasProyecto,
+                        'Tareas': tareas,
+                        'Proyecto': proyectoDB,
+                        'usuario': miembroAdmin,
+                    })
                 
             
             
@@ -276,17 +319,19 @@ def TableroProyecto (request, id_proyecto):
             CategoriaIndice.indice = datos['indiceCategoria']
             CategoriaIndice.save()
             
-        elif tipoPost == "invitarMiembro":
+            return redirect('ProyectoTablero', id_proyecto)
             
-            if not miembroAdmin.is_admin:
-                return render(request, 'proyecto/tableros.html', {
-                    "id_proyecto": id_proyecto,
-                    'miembros': miembros,
-                    'categorias': CategoriasProyecto,
-                    'Tareas': tareas,
-                    'Proyecto': proyectoDB,
-                    'usuario': miembroAdmin,
-                })
+        elif tipoPost == "invitarMiembro":
+            if not request.user.is_staff:
+                if not miembroAdmin.is_admin:
+                    return render(request, 'proyecto/tableros.html', {
+                        "id_proyecto": id_proyecto,
+                        'miembros': miembros,
+                        'categorias': CategoriasProyecto,
+                        'Tareas': tareas,
+                        'Proyecto': proyectoDB,
+                        'usuario': miembroAdmin,
+                    })
             
             usuarioInvitar= None
             
@@ -309,6 +354,7 @@ def TableroProyecto (request, id_proyecto):
             if usuarioInvitar:
                 miembroInvitar = miembros_proyecto(id_proyecto_id=id_proyecto, usuario=usuarioInvitar)
                 miembroInvitar.save()
+                return redirect('ProyectoTablero', id_proyecto)
             
             
 
@@ -323,6 +369,14 @@ def TableroProyecto (request, id_proyecto):
     })
 
 def TableroEstadistica (request, id_proyecto):
+    
+    if not request.user.is_staff:
+        
+        try:
+            miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
+        except:
+            return redirect('Inicio')
+
     
     CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto).order_by('indice')
     
@@ -343,13 +397,18 @@ def TableroEstadistica (request, id_proyecto):
     })
     
 def EliminarMiembroProyecto(request, id_miembro, id_proyecto):
-    try:
-        usuarioAdmin = miembros_proyecto.objects.get(id_proyecto_id=id_proyecto, usuario=request.user)
-    except:
-        return redirect('Inicio')
+
     
-    if not usuarioAdmin.is_admin:
-        return redirect('Inicio')
+    if not request.user.is_staff:
+        
+        try:
+            usuarioAdmin = miembros_proyecto.objects.get(id_proyecto_id=id_proyecto, usuario=request.user)
+        except:
+            return redirect('Inicio')
+        
+        
+        if not usuarioAdmin.is_admin:
+            return redirect('Inicio')
 
     try:
         
@@ -364,10 +423,12 @@ def EliminarMiembroProyecto(request, id_miembro, id_proyecto):
     return redirect('ProyectoTablero', id_proyecto)
 
 def EliminarCategoriaProyecto(request, id_categoria, id_proyecto):
-    try:
-        miembro = miembros_proyecto.objects.get(id_proyecto_id=id_proyecto, usuario=request.user)
-    except:
-        return redirect('Inicio')
+    
+    if not request.user.is_staff:
+        try:
+            miembro = miembros_proyecto.objects.get(id_proyecto_id=id_proyecto, usuario=request.user)
+        except:
+            return redirect('Inicio')
 
     tareas = tareas_proyecto.objects.filter(id_proyecto_id=id_proyecto)
     
@@ -385,9 +446,12 @@ def EliminarCategoriaProyecto(request, id_categoria, id_proyecto):
       
 def EliminarProyecto(request, id_proyecto):
     # No se pueda usar si no es admin del proyecto
-    miembros = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
-    if not miembros.is_admin:
-        return redirect('Inicio')
+    
+    if not request.user.is_staff:
+        miembros = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
+        
+        if not miembros.is_admin:
+            return redirect('Inicio')
     
     
     proyectoEliminar = Proyectos.objects.get(pk=id_proyecto)
@@ -398,25 +462,18 @@ def EliminarProyecto(request, id_proyecto):
     return redirect('Inicio')
 
 def EliminarTarea(request, id_tarea, id_proyecto):
+    # No se pueda usar si no es miembro del proyecto
+    if not request.user.is_staff:
+        try:
+            miembro = miembros_proyecto.objects.get(id_proyecto_id=id_proyecto, usuario=request.user)
+        except:
+            return redirect('Inicio')
     
     tareaEliminar = TareasDB.objects.get(id_tarea=id_tarea)
     
     tareaEliminar.delete()
     
-    miembros = miembros_proyecto.objects.filter(id_proyecto=id_proyecto)
-    CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto)
-    ProyectoDB = Proyectos.objects.get(pk=id_proyecto)
-    tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
-    miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
-    
-    return render(request, 'proyecto/tableros.html', {
-        "id_proyecto": id_proyecto,
-        'miembros': miembros,
-        'categorias': CategoriasProyecto,
-        'Tareas': tareas,
-        'Proyecto': ProyectoDB,
-        'usuario': miembroAdmin,
-    })
+    return redirect('ProyectoTablero', id_proyecto)
 
 def EditarTareaProyecto(request, id_proyecto, id_tarea):
     
@@ -433,7 +490,7 @@ def EditarTareaProyecto(request, id_proyecto, id_tarea):
             
         print(datos)
 
-        if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['DescripcionTarea']):
+        if not re.fullmatch(r"^[a-zA-Z0-9ñÑ\s]{1,}$", datos['DescripcionTarea']):
             return render(request, 'proyecto/tableros.html', {
                 'avisoTarea': 'Debe contener un nombre.',
                 "id_proyecto": id_proyecto,
@@ -443,7 +500,7 @@ def EditarTareaProyecto(request, id_proyecto, id_tarea):
                 "categorias": CategoriasProyecto,
             })
             
-        if not re.fullmatch("^[a-zA-Z0-9\s]{1,}$", datos['DescripcionTarea']):
+        if not re.fullmatch(r"^[a-zA-Z0-9ñÑ\s]{1,}$", datos['DescripcionTarea']):
             return render(request, 'proyecto/tableros.html', {
                 "id_proyecto": id_proyecto,
                 "datosTarea": tareaProyecto.id_tarea,
@@ -470,20 +527,11 @@ def EditarTareaProyecto(request, id_proyecto, id_tarea):
             
             
             TareaActualizar.save()
-            Tarea_ProyectoActualizar.save() 
+            Tarea_ProyectoActualizar.save()
             
-            ProyectoDB = Proyectos.objects.get(pk=id_proyecto)
-            tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
-            miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
+            return redirect('ProyectoTablero', id_proyecto)
             
-            return render(request, 'proyecto/tableros.html', {
-                "id_proyecto": id_proyecto,
-                'miembros': miembros,
-                'categorias': CategoriasProyecto,
-                'Tareas': tareas,
-                'Proyecto': ProyectoDB,
-                'usuario': miembroAdmin,
-            })
+
         except Exception as Error:
             
             print(f"Error: {Error}")
@@ -495,6 +543,28 @@ def EditarTareaProyecto(request, id_proyecto, id_tarea):
         "miembros": miembros,
         "categorias": CategoriasProyecto,
     })
+
+def dropTareaCategoria(request, id_proyecto, id_tarea, id_categoria):
+    
+    if not request.user.is_staff:
+        # No se pueda usar si no es miembro del proyecto
+        try:
+            miembro = miembros_proyecto.objects.get(id_proyecto_id=id_proyecto, usuario=request.user)
+        except:
+            return redirect('Inicio')
+    
+    
+    try:
+        CategoriaDB = categorias.objects.get(pk=id_categoria)
+        tareaActualizar = TareasDB.objects.get(id_tarea=id_tarea)
+        
+        tareaActualizar.categoria = CategoriaDB
+        
+        tareaActualizar.save()
+    except:
+        return redirect('ProyectoTablero', id_proyecto)
+ 
+    return redirect('ProyectoTablero', id_proyecto)
 
 def Perfil(request):
     
@@ -590,32 +660,116 @@ def Perfil(request):
         'datosProyecto': datosProyecto.items(),
     })
 
-
-
-
-def PanelAdmin(request):
-    
-    # Para que no entre a esta ruta si no esta logeado
-    if not request.user.is_authenticated:
-        
-        return redirect('Inicio')
-    
-    return render(request, 'admin.html')
-
 def ProyectosAdmin(request):
     
     # Para que no entre a esta ruta si no esta logeado
-    if not request.user.is_authenticated:
+    if not request.user.is_authenticated and not request.user.is_staff:
         
         return redirect('Inicio')
     
-    return render(request, 'admin/ProyectosAdmin.html')
+    allProyectos = miembros_proyecto.objects.values('id_proyecto_id').distinct()
+    
+    proyectos = []
+    
+    for proyecto in allProyectos:
+        search = miembros_proyecto.objects.filter(id_proyecto_id=proyecto['id_proyecto_id']).first()
+        proyectos.append(search)
+    
+        
+    datosProyecto = {}
+    
+    print(proyectos)
+    for proy in proyectos:
+        
+        datosProyecto[proy.id_proyecto] = {
+            'TareasTotal': tareas_proyecto.objects.filter(id_proyecto=proy.id_proyecto).count(), 
+            'MiembrosTotal': miembros_proyecto.objects.filter(id_proyecto=proy.id_proyecto).count(),
+        }
+    
+    
+    return render(request, 'admin/ProyectosAdmin.html', {
+        'proyectos': proyectos,
+        'datosProyecto': datosProyecto.items(),
+    })
 
 def UsuariosAdmin(request):
     
     # Para que no entre a esta ruta si no esta logeado
-    if not request.user.is_authenticated:
+    if not request.user.is_authenticated and not request.user.is_staff:
         
         return redirect('Inicio')
     
-    return render(request, 'admin/UsuariosAdmin.html')
+    usuarios = Usuarios.objects.filter(is_staff=True)
+    
+    if request.method == "POST":
+        
+        datos = request.POST
+        
+        if re.fullmatch(r'^\s+|^\s*$', datos['correoAdmin']):
+            return render(request, 'admin/UsuariosAdmin.html', {
+                'userLogin': request.user,
+                'usuarios': usuarios,
+                'aviso': 'No se puede crear con solamente espacios'
+            })
+        
+        if re.fullmatch(r'^[ñÑa-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', datos['correoAdmin']):
+            
+            try:
+                miembroAdmin = Usuarios.objects.get(correo=datos['correoAdmin'])
+                
+                if miembroAdmin.is_staff == True:
+                    return render(request, 'admin/UsuariosAdmin.html', {
+                        'userLogin': request.user,
+                        'usuarios': usuarios,
+                        'aviso': 'Este correo ya es adminS'
+                    })
+                
+                miembroAdmin.is_staff = True
+                
+                miembroAdmin.save()
+                
+            except:
+                return render(request, 'admin/UsuariosAdmin.html', {
+                    'userLogin': request.user,
+                    'usuarios': usuarios,
+                    'aviso': 'Correo no registrado'
+                })
+            
+            return redirect('PAdminUsuarios')
+            
+        else:
+            return render(request, 'admin/UsuariosAdmin.html', {
+                'userLogin': request.user,
+                'usuarios': usuarios,
+                'aviso': 'Solamente letras, numeros y espacio'
+            })
+    
+    return render(request, 'admin/UsuariosAdmin.html', {
+        'userLogin': request.user,
+        'usuarios': usuarios,
+    })
+    
+def deleteUsuarioAdmin(request, correoAdmin):
+    
+    if not request.user.is_authenticated and not request.user.is_staff:
+        
+        return redirect('Inicio')
+    
+    if request.user.correo == correoAdmin:
+        print('No te puedes eliminar a ti mismo')
+        return redirect('PAdminUsuarios')
+        
+    try:
+        usuarioAdmin = Usuarios.objects.get(correo=correoAdmin)
+        
+        if usuarioAdmin.is_staff == False:
+            return redirect('PAdminUsuarios')
+        
+        usuarioAdmin.is_staff = False
+        
+        usuarioAdmin.save()
+        
+    except:
+        return redirect('PAdminUsuarios')
+        
+    return redirect('PAdminUsuarios')
