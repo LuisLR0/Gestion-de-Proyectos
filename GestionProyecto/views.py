@@ -103,8 +103,10 @@ def Registro (request):
     if request.method == 'POST':
         datos = request.POST
         
-        for indice, valor in datos.items():
+        print(datos)
         
+        for indice, valor in datos.items():
+            
             if re.fullmatch(r'^\s+|^\s*$', valor):
                 return render(request, 'registro.html', {
                     'aviso': "Comprueba de que ninguna campo contenga espacios."
@@ -137,7 +139,9 @@ def Registro (request):
             apellidos = datos['apellidos']
             contraseña = datos['contraseña']
             
-            # Usuarios.objects.create_user(correo=correo, nombre=nombres, apellido=apellidos, password=contraseña)
+            Usuarios.objects.create_user(correo=correo, nombre=nombres, apellido=apellidos, password=contraseña)
+            
+            return redirect('Login')
         except:
             return redirect('Registro')
     
