@@ -77,9 +77,12 @@ WSGI_APPLICATION = 'Proyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'softproject.sqlite3',
     }
 }
+
+# Usar modelo de usuario personalizado
+AUTH_USER_MODEL = 'GestionProyecto.Usuarios'
 
 
 # Password validation

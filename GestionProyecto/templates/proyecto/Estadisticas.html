@@ -1,0 +1,55 @@
+{% extends "proyectos.html" %}
+
+{% block opcionesMenu %}
+<a href="{% url "ProyectoTablero" id_proyecto %}" class="buttonNav">
+    <figure class="w-9 h-9 cursor-pointer">
+        <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 198 199">
+            <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="8" y="8" width="79" height="79" rx="15.72"/>
+            <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="111" y="8" width="79" height="79" rx="15.72"/>
+            <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="8" y="112" width="79" height="79" rx="15.72"/>
+            <rect fill="none" stroke-miterlimit="10" stroke-width="16" x="111" y="112" width="79" height="79" rx="15.72"/>
+        </svg>
+    </figure>
+    <p class="text-[13px]">Tableros</p>
+</a>
+{% endblock opcionesMenu %}
+
+{% block tabProyectos %}
+
+<main class="text-white md:h-[calc(100%-3.75rem)] md:overflow-y-hidden flex flex-col gap-4 items-center place-content-center md:place-content-baseline md:ml-30 scrollbar scrollbar-thumb-gray-700 p-5">
+
+    <h2 class="text-center text-2xl font-bold">Estadisticas del Proyecto</h2>
+
+    <section class="w-full p-5 grid gap-10 md:grid-cols-2 lg:grid-cols-3 max-w-screen-lg">
+
+        {% for categoria in categorias %}
+
+            <div class="grid rounded-2xl overflow-hidden">
+                <div class="w-full h-20 bg-blue-500 flex justify-center items-center">
+                    <h2 class="font-semibold text-xl">{{categoria.id_categoria.nombre}}</h2>
+                </div>
+                {% for tarea in Tareas %}
+                    {% if categoria.id_categoria.nombre == tarea.0 %}
+                        <article class="h-30 bg-blue-800 flex justify-center items-center">
+                            <h2 class="font-semibold text-4xl">{{tarea.1.valor}}</h2>
+                        </article>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+
+        {% endfor %}
+
+    </section>
+
+    <h2 class="text-center text-2xl font-bold">Total de Tareas</h2>
+
+    <div class="grid rounded-2xl overflow-hidden">
+        <div class="w-50 h-20 bg-blue-500 flex justify-center items-center">
+            <h2 class="font-black text-4xl">{{tareasTotal}}</h2>
+        </div>
+    </div>
+
+</main>
+
+{% endblock tabProyectos %}

@@ -1,0 +1,135 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block Titulo %}Perfil{% endblock Titulo %}
+
+{% block Contenido %}
+
+    <!-- Modal de crear Proyecto -->
+    <div class="fixed top-0 left-0 z-99 hidden text-white" id="modalCrearProyecto">
+        <div class="w-screen h-screen bg-black/30 flex items-center justify-center">
+
+            <div class="bg-blue-900 w-[22rem] h-[30rem] rounded-md flex flex-col items-center justify-around gap-5 p-10">
+                
+                <h2 class="font-bold text-3xl">Crear Proyecto</h2>
+
+                <form method="post" class="flex flex-col items-center justify-around gap-4 w-full">
+
+                    {% csrf_token %}
+
+                    {% if aviso %}
+
+                        <span class="font-bold text-red-500">{{ aviso }}</span>
+                        
+                    {% endif %}
+
+                    <label class="flex flex-col font-semibold text-lg gap-3 w-full">
+                        Nombre del Proyecto
+                        <input required name="NombreProyecto" class="inputStyle" type="text">
+                    </label>
+
+                    <button class="botonStyle">Crear</button>
+
+                </form>
+                <button class="botonStyle" onclick="closeModalCrearProyecto()">Cancelar</button>
+            </div>
+
+        </div>
+    </div>
+
+    <main class="w-full h-max text-white p-5 flex place-content-center">
+
+        
+        <section class="w-full h-full lg:max-w-screen-lg grid place-items-center auto-rows-max gap-7 mb-5">
+            <div class="md:col-start-1 md:col-end-3 w-full flex items-center justify-between">
+                <a class="text-4xl font-bold" href="{% url 'Inicio' %}"> < </a>
+                <a href="{% url "Inicio" %}" class="text-3xl font-black">SOFT</a>
+            </div>
+
+            <header class="w-full h-auto py-5 bg-blue-800 rounded-lg place-content-center space-y-5 flex flex-col items-center md:row-start-2 md:row-end-4 md:h-full">
+                <div class="flex md:flex-col items-center w-full">
+                    <figure class="w-27 h-27">
+                        <svg class="fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2m0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3m-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228"/>
+                        </svg>                      
+                    </figure>
+                    <article class="ml-2">
+                        <h2 class="titulos md:text-center">{{usuario.nombre}} {{usuario.apellido}}</h2>
+                        <div class="flex justify-center items-center gap-2">
+                            <figure>
+                                <svg class="fill-white w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2m0 2v.511l-8 6.223-8-6.222V6zM4 18V9.044l7.386 5.745a.994.994 0 0 0 1.228 0L20 9.044 20.002 18z"/>
+                                </svg>                                  
+                            </figure>
+                            <p>{{usuario.correo}}</p>
+                        </div>
+                    </article>
+                </div>
+                <div class="flex flex-col md:flex-row gap-5">
+
+                    {% if admin %}
+                        <a href="{% url 'PAdminProyectos' %}" class="botonStyle text-center">Panel Administrador</a>
+                    {% endif %}
+                    <a href="{% url 'CerrarSesion' %}" class="botonStyle text-center">Cerrar Sesion</a>
+                </div>
+            </header>
+
+
+            <article class="w-full h-full bg-blue-800 rounded-lg p-5 space-y-4 md:col-start-2 md:col-end-3">
+                <h2 class="titulos">Proyectos</h2>
+                <p class="text-4xl font-black text-center">{{totalProyectos}}</p>
+            </article>
+
+            <article class="w-full h-full bg-blue-800 rounded-lg p-5 space-y-4 md:col-start-2 md:col-end-3">
+                <h2 class="titulos">Tareas Asignadas</h2>
+                <p class="text-4xl font-black text-center">{{totalTareas}}</p>
+            </article>
+
+
+            <main class="w-full h-max bg-blue-800 rounded-lg p-5 flex flex-col md:col-start-1 md:col-end-3">
+
+
+                <h2 class="titulos">Tus Proyectos</h2>
+
+                <section class="grid my-5 gap-15 md:grid-cols-2 lg:grid-cols-3 ">
+     
+                    {% for proyecto in proyectos %}
+
+                        <div class="bg-blue-900 w-full h-max rounded-2xl p-5 sombraPanels">
+                            <h4 class="text-xl font-bold mb-5">{{ proyecto.id_proyecto.nombre }}</h4>
+
+                            {% for datos in datosProyecto %}
+                                {% if proyecto.id_proyecto == datos.0 %}
+                                    <span class="text-lg font-medium">Tareas: <strong>{{datos.1.TareasTotal}}</strong> </span>
+                                    <p class="text-lg font-medium">Miembros: <strong>{{datos.1.MiembrosTotal}}</strong> </p>
+                                {% endif %}
+                            {% endfor %}
+
+                            <div class="w-full flex flex-row-reverse">
+                                <a href='{% url "ProyectoTablero" proyecto.id_proyecto.id_proyecto %}' class="botonStyle w-30 mt-5 text-center">Entrar</a>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+                    <div onclick="openModalCrearProyecto()" class="bg-blue-900 sombraPanels cursor-pointer select-none w-full h-max rounded-2xl p-5 flex flex-col justify-center items-center">
+                        <h4 class="text-2xl font-bold mb-5">Crea tu Proyecto</h4>
+                        <figure>
+                            <svg class="fill-white w-30 h-30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M20 2H8c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2m-2 9h-3v3h-2v-3h-3V9h3V6h2v3h3zM4 22h12v-2H4V8H2v12c0 1.103.897 2 2 2"/>
+                            </svg>                      
+                        </figure>
+                    </div>
+                </section>
+ 
+
+            </main>
+
+        </section>
+    </main>
+    
+{% endblock Contenido %}
+
+{% block scriptJS %}
+    <script src="{% static 'js/modalShow.js' %}"></script>
+{% endblock scriptJS %}
