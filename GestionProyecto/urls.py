@@ -19,4 +19,5 @@ urlpatterns = [
     path("panelAdmin/proyectos", views.ProyectosAdmin, name='PAdminProyectos'),
     path("panelAdmin/usuarios", views.UsuariosAdmin, name='PAdminUsuarios'),
     path("panelAdmin/<str:correoAdmin>/usuarios", views.deleteUsuarioAdmin, name='PAdminDeleteUsuarios'),
+    path("generarpdf/<int:id_proyecto>", views.generarPDF, name='generarPDF'),
 ]

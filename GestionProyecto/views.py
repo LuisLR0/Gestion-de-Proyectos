@@ -777,3 +777,48 @@ def deleteUsuarioAdmin(request, correoAdmin):
         return redirect('PAdminUsuarios')
         
     return redirect('PAdminUsuarios')
+
+
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint import HTML
+from django.utils import timezone
+
+
+def generarPDF(request, id_proyecto):
+    
+    # Para que no entre a esta ruta si no esta logeado
+    if not request.user.is_authenticated:
+        
+        return redirect('Inicio')
+    
+    if not request.user.is_staff:
+        
+        try:
+            miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
+        except:
+            return redirect('Inicio')
+    
+
+    CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto).order_by('indice')
+    tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
+    proyectoDB = Proyectos.objects.get(pk=id_proyecto)
+    
+    html_string = render_to_string('estadisticaspdf.html', {
+        'categorias': CategoriasProyecto,
+        'Tareas': tareas,
+        'Proyecto': proyectoDB,
+        'FechaActual': timezone.now(),
+    })
+
+    html = HTML(
+        string=html_string,
+        base_url=request.build_absolute_uri('/')  # Resuelve rutas como /static/
+    )
+    
+    pdf = html.write_pdf()
+    
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="documento.pdf"'  # Nombre del archivo
+    return response

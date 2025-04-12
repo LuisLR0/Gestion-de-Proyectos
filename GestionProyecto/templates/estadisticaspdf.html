@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .containerPrueba {
+            width: 100%;
+            height: 100%;
+            /* background-color: #7696ee; */
+        }
+
+        .tituloProyecto {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .tareasDelProyecto {
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        thead {
+            background-color: #7696ee;
+            color: white;
+            text-align: center;
+            font-size: 13px;
+            width: 100%;
+
+            th {
+                padding: 0.5rem 2rem;
+            }
+        }
+
+        tbody {
+            text-align: center;
+            font-size: 12px;
+            width: 100%;
+
+            tr {
+                background-color: #f2f2f2;
+                color: black;
+                padding: 0.5rem 2rem;
+            }
+        }
+
+        .fechaImpresion {
+            margin: 2rem 0 0 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="containerPrueba">
+        <h2 class="tituloProyecto">{{Proyecto.nombre}}<h2>
+        <h3 class="tareasDelProyecto">Tareas del proyecto</h3>
+
+        {% for categoria in categorias %}
+            <section class='sectionCategoria'>
+                <h3>{{categoria.id_categoria.nombre}}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Creado</th>
+                            <th>Prioridad</th>
+                            <th>Asignado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tarea in Tareas %}
+                            {% if tarea.id_tarea.categoria == categoria.id_categoria %}
+                                <tr>
+                                    <td>{{tarea.id_tarea.nombre}}</td>
+                                    <td>{{tarea.id_tarea.descripcion}}</td>
+                                    <td>{{tarea.id_tarea.fecha_creacion}}</td>
+                                    <td>{{tarea.id_tarea.prioridad}}</td>
+                                    <td>{{tarea.usuario.nombre }}  {{ tarea.usuario.apellido }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        {% endfor %}
+        <p class="fechaImpresion"> Fecha de imprimido: <strong>{{FechaActual}}</strong></p>
+    </div>
+</body>
+</html>
