@@ -211,8 +211,26 @@
                                     </div>
                                 </div>
                                 <p>{{ tarea.id_tarea.descripcion }}</p>
-                                <div class="flex gap-5">
-                                    <span class="font-black">{{ tarea.id_tarea.prioridad }}</span>
+                                <p>Creado: <strong>{{ tarea.id_tarea.fecha_creacion|date:"d-m-Y, H:i:s" }}</strong></p>
+                                <p>Modificado: <strong>{{ tarea.id_tarea.fecha_modificacion|date:"d-m-Y, H:i:s" }}</strong></p>
+                                <div class="flex gap-2">
+                                    <span 
+                                        class="
+                                            font-black 
+                                            h-[1.6rem] 
+                                            rounded-2xl 
+                                            px-[0.5rem]
+                                            {% if tarea.id_tarea.prioridad == "ALTA" %}
+                                                bg-red-500
+                                            {% elif tarea.id_tarea.prioridad == "MEDIA" %}
+                                                bg-yellow-500
+                                            {% elif tarea.id_tarea.prioridad == "BAJA" %}
+                                                bg-green-500
+                                            {% endif %}
+                                        "
+                                    >
+                                        {{ tarea.id_tarea.prioridad }}
+                                    </span>
                                     <p>{{ tarea.usuario.nombre }}  {{ tarea.usuario.apellido }}</p>
                                 </div>
                             </div>

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{Proyecto.nombre}}</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <style>
 
@@ -85,8 +85,20 @@
                                 <tr>
                                     <td>{{tarea.id_tarea.nombre}}</td>
                                     <td>{{tarea.id_tarea.descripcion}}</td>
-                                    <td>{{tarea.id_tarea.fecha_creacion}}</td>
-                                    <td>{{tarea.id_tarea.prioridad}}</td>
+                                    <td>{{tarea.id_tarea.fecha_creacion|date:"d-m-Y, H:i:s"}}</td>
+                                    <td 
+                                        style="
+                                            {% if tarea.id_tarea.prioridad == 'BAJA' %}
+                                                background-color: #00ff007c;
+                                            {% elif tarea.id_tarea.prioridad == 'MEDIA' %}
+                                                background-color: #FFFF007c;
+                                            {% elif tarea.id_tarea.prioridad == 'ALTA' %}
+                                                background-color: #FF00007c;
+                                            {% endif %}
+                                        "
+                                    >
+                                        {{tarea.id_tarea.prioridad}}
+                                    </td>
                                     <td>{{tarea.usuario.nombre }}  {{ tarea.usuario.apellido }}</td>
                                 </tr>
                             {% endif %}

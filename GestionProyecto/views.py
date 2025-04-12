@@ -820,5 +820,5 @@ def generarPDF(request, id_proyecto):
     pdf = html.write_pdf()
     
     response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="documento.pdf"'  # Nombre del archivo
+    response['Content-Disposition'] = f'filename="{proyectoDB.nombre}.pdf"'  # Nombre del archivo
     return response
