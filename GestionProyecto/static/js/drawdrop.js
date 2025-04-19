@@ -15,6 +15,11 @@ addEventListener('DOMContentLoaded', () => {
         
         columna.addEventListener('dragover', event => {
             event.preventDefault();
+            titulo = columna.querySelector('h2')
+            titulo.classList.add('pointer-events-none')
+    
+            sectionTareas = columna.querySelector('section')
+            sectionTareas.classList.add('pointer-events-none')
 
         })
 
