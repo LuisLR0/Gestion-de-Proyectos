@@ -6,60 +6,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{Proyecto.nombre}}</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
     <style>
 
         body {
-            width: 100vw;
-            height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+    
         .containerPrueba {
             width: 100%;
-            height: 100%;
-            /* background-color: #7696ee; */
         }
-
+    
         .tituloProyecto {
+            text-align: center;
+            font-size: 1.8rem;
+        }
+    
+        .tareasDelProyecto {
             text-align: center;
             font-size: 1.5rem;
         }
 
-        .tareasDelProyecto {
-            text-align: center;
-            font-size: 1.2rem;
+        .tituloCategoria {
+            /* border-top: #000 solid 0.1rem; */
+            padding-top: 1rem;
+            font-size: 14px;
+
         }
 
-        thead {
+        thead tr {
             background-color: #7696ee;
             color: white;
             text-align: center;
             font-size: 13px;
-            width: 100%;
-
-            th {
-                padding: 0.5rem 2rem;
-            }
+            padding-top: 0.35rem;
+        }
+        thead th {
+            padding: 0.2rem;
+            display: flex;
         }
 
-        tbody {
+        tbody tr {
             text-align: center;
             font-size: 12px;
-            width: 100%;
-
-            tr {
-                background-color: #f2f2f2;
-                color: black;
-                padding: 0.5rem 2rem;
-            }
+            padding-top: 0.4rem;
         }
 
+        tbody td {
+            background-color: #f1f1f1;
+        }
+
+    
+         .prioridad-baja {
+            background-color: #6aff6a;
+            font-weight: bold;
+         }
+          .prioridad-media {
+            background-color: #FFFF6a;
+            font-weight: bold;
+         }
+         .prioridad-alta {
+            background-color: #ff6a6a;
+            font-weight: bold;
+         }
+    
+    
         .fechaImpresion {
             margin: 2rem 0 0 0;
+            font-size: 12px;
         }
-
+    
     </style>
+    
 </head>
 <body>
     <div class="containerPrueba">
@@ -68,7 +85,7 @@
 
         {% for categoria in categorias %}
             <section class='sectionCategoria'>
-                <h3>{{categoria.id_categoria.nombre}}</h3>
+                <h3 class="tituloCategoria">{{categoria.id_categoria.nombre}}</h3>
                 <table>
                     <thead>
                         <tr>
@@ -86,20 +103,18 @@
                                     <td>{{tarea.id_tarea.nombre}}</td>
                                     <td>{{tarea.id_tarea.descripcion}}</td>
                                     <td>{{tarea.id_tarea.fecha_creacion|date:"d-m-Y, H:i:s"}}</td>
-                                    <td 
-                                        style="
-                                            {% if tarea.id_tarea.prioridad == 'BAJA' %}
-                                                background-color: #00ff007c;
-                                            {% elif tarea.id_tarea.prioridad == 'MEDIA' %}
-                                                background-color: #FFFF007c;
-                                            {% elif tarea.id_tarea.prioridad == 'ALTA' %}
-                                                background-color: #FF00007c;
-                                            {% endif %}
-                                        "
-                                    >
+                                    <td class="
+                                        {% if tarea.id_tarea.prioridad == 'BAJA' %}
+                                            prioridad-baja
+                                        {% elif tarea.id_tarea.prioridad == 'MEDIA' %}
+                                            prioridad-media
+                                        {% elif tarea.id_tarea.prioridad == 'ALTA' %}
+                                            prioridad-alta
+                                        {% endif %}
+                                    ">
                                         {{tarea.id_tarea.prioridad}}
                                     </td>
-                                    <td>{{tarea.usuario.nombre }}  {{ tarea.usuario.apellido }}</td>
+                                    <td>{{tarea.usuario.nombre }} {{ tarea.usuario.apellido }}</td>
                                 </tr>
                             {% endif %}
                         {% endfor %}

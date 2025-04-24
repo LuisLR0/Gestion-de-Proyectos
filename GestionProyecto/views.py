@@ -3,6 +3,13 @@ from django.contrib.auth import login, logout, authenticate
 from django.db.models import Count, Case, When, Value
 from .models import Usuarios, Proyectos, miembros_proyecto, tareas_proyecto, tareas as TareasDB, categorias, categorias_proyecto
 
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string # para convertir el html en string
+from django.utils import timezone
+from xhtml2pdf import pisa
+import io
+
 import re
 
 # Create your views here.
@@ -780,31 +787,37 @@ def deleteUsuarioAdmin(request, correoAdmin):
 
 
 
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from weasyprint import HTML
-from django.utils import timezone
 
 
 def generarPDF(request, id_proyecto):
-    
     # Para que no entre a esta ruta si no esta logeado
     if not request.user.is_authenticated:
-        
         return redirect('Inicio')
+
     
     if not request.user.is_staff:
         
+        # Comprobacion si entra un usuario que no esta enel proyecto lo devuelva al inicio
         try:
-            miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
-        except:
+            miembro = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
+        except miembros_proyecto.DoesNotExist:
             return redirect('Inicio')
+
+    # Comprobacion si los datos se encuentran, si no se encuentra se envia al inicio
+    try:
+        CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto).order_by('indice')
+        tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
+        proyectoDB = Proyectos.objects.get(pk=id_proyecto)
+    except (Proyectos.DoesNotExist, categorias_proyecto.DoesNotExist, tareas_proyecto.DoesNotExist) as e:
+        print(f"Error: {e}")
+        return redirect('Inicio')
+    
+    
+    
+    
+    
     
 
-    CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto).order_by('indice')
-    tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
-    proyectoDB = Proyectos.objects.get(pk=id_proyecto)
-    
     html_string = render_to_string('estadisticaspdf.html', {
         'categorias': CategoriasProyecto,
         'Tareas': tareas,
@@ -812,13 +825,15 @@ def generarPDF(request, id_proyecto):
         'FechaActual': timezone.now(),
     })
 
-    html = HTML(
-        string=html_string,
-        base_url=request.build_absolute_uri('/')  # Resuelve rutas como /static/
+    buffer = io.BytesIO()
+
+    pisa.CreatePDF(
+        html_string,
+        dest=buffer,
     )
-    
-    pdf = html.write_pdf()
-    
+
+    pdf = buffer.getvalue()
+    buffer.close()
+
     response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = f'filename="{proyectoDB.nombre}.pdf"'  # Nombre del archivo
     return response
