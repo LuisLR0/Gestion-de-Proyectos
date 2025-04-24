@@ -31,7 +31,7 @@
                     <button class="botonStyle">Crear</button>
 
                 </form>
-                <button class="botonStyle" onclick="closeModalCrearProyecto()">Cancelar</button>
+                <button class="botonStyle" onclick="CloseModal('modalCrearProyecto')">Cancelar</button>
             </div>
 
         </div>
@@ -112,7 +112,7 @@
 
                     {% endfor %}
 
-                    <div onclick="openModalCrearProyecto()" class="bg-blue-900 sombraPanels cursor-pointer select-none w-full h-max rounded-2xl p-5 flex flex-col justify-center items-center">
+                    <div onclick="OpenModal('modalCrearProyecto')" class="bg-blue-900 sombraPanels cursor-pointer select-none w-full h-max rounded-2xl p-5 flex flex-col justify-center items-center">
                         <h4 class="text-2xl font-bold mb-5">Crea tu Proyecto</h4>
                         <figure>
                             <svg class="fill-white w-30 h-30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

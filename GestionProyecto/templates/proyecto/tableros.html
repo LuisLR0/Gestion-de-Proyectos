@@ -3,7 +3,7 @@
 
 {% block opcionesMenu %}
 
-<div class="buttonNav" onclick="openModalCrear()">
+<div class="buttonNav" onclick="OpenModal('modalCrear')">
     <figure class="w-9 h-9 cursor-pointer">
         <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 213.25 208.08">
             <path fill="none" stroke-miterlimit="10" stroke-width="16" d="M200.8 12.62c-7.26-7.25-18.7-4.07-21.81-3a3.44 3.44 0 0 0-1.35.83l-116.7 116.7a9.4 9.4 0 0 0-2.29 3.68l-6.11 17.92a9.56 9.56 0 0 0 12.13 12.13l17.93-6.1a9.7 9.7 0 0 0 3.67-2.29L202.94 35.82a3.5 3.5 0 0 0 .86-1.44c.99-3.24 3.87-14.88-3-21.79M120 17.08H51a43 43 0 0 0-43 43v97a43 43 0 0 0 43 43h96a43 43 0 0 0 43-43v-37"/>
@@ -84,7 +84,7 @@
                     <button class="botonStyle" onclick="">Crear</button>
                     
                 </form>
-                <button class="botonStyle" onclick="closeModalCrear()">Cancelar</button>
+                <button class="botonStyle" onclick="CloseModal('modalCrear')">Cancelar</button>
             </div>
     
         </div>
@@ -124,7 +124,7 @@
 
                     <button class="botonStyle">Crear</button>
                 </form>
-                <button class="botonStyle" onclick="closeModalCrearColumna()">Cancelar</button>
+                <button class="botonStyle" onclick="CloseModal('modalCrearColumna')">Cancelar</button>
             </div>
     
         </div>
@@ -179,7 +179,7 @@
                    
                 </div>
                 
-                <button class="botonStyle" onclick="closeModalOpcionesColumna()">Cancelar</button>
+                <button class="botonStyle" onclick="CloseModal('modalOpcionesColumna')">Cancelar</button>
             </div>
     
         </div>
@@ -196,7 +196,6 @@
                     {% for tarea in Tareas %}
     
                         {% if tarea.id_tarea.categoria == categoria.id_categoria %}
-                            {% comment %} TESTEANDO {% endcomment %}
                             <div id="drawTarea" data-tareaid="{{ tarea.id_tarea.pk }}" draggable="true" class="bg-blue-500 h-auto w-full rounded-2xl p-3 flex flex-col justify-between gap-2">
                                 <div class="flex gap-2 justify-between ">
                                     <h2 class="titulos max-w-65 overflow-hidden">{{ tarea.id_tarea.nombre }}</h2>
@@ -245,12 +244,12 @@
         {% endfor %}
 
         <div class="flex flex-col gap-10">
-            <article onclick="openModalCrearColumna()" class="h-[5rem] select-none cursor-pointer md:scale-80 w-[19rem] md:w-[23rem] md:max-w-[27rem] max-w-[20rem] bg-blue-800 rounded-xl flex flex-col justify-center items-center gap-5 p-5 md:mr-5">
+            <article onclick="OpenModal('modalCrearColumna')" class="h-[5rem] select-none cursor-pointer md:scale-80 w-[19rem] md:w-[23rem] md:max-w-[27rem] max-w-[20rem] bg-blue-800 rounded-xl flex flex-col justify-center items-center gap-5 p-5 md:mr-5">
 
                 <h2 class="text-2xl font-bold">Agregar Columna</h2>
     
             </article>
-            <article onclick="openModalOpcionesColumna()" class="h-[5rem] select-none cursor-pointer md:scale-80 w-[19rem] md:w-[23rem] md:max-w-[27rem] max-w-[20rem] bg-blue-800 rounded-xl flex flex-col justify-center items-center gap-5 p-5 md:mr-5">
+            <article onclick="OpenModal('modalOpcionesColumna')" class="h-[5rem] select-none cursor-pointer md:scale-80 w-[19rem] md:w-[23rem] md:max-w-[27rem] max-w-[20rem] bg-blue-800 rounded-xl flex flex-col justify-center items-center gap-5 p-5 md:mr-5">
 
                 <h2 class="text-2xl font-bold">Editar Columnas</h2>
     
