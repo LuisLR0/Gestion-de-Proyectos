@@ -58,8 +58,8 @@
                 <h2 class="md:ml-27 md:text-xl font-semibold">{{ Proyecto.nombre }}</h2>
             </div>
 
-            {% if usuario.is_admin %}
-                <div class="flex gap-5 px-3">
+            <div class="flex gap-5 px-3">
+                {% if usuario.is_admin %}
                     <figure onclick="OpenModal('modalMiembros')" class="w-10 h-10 cursor-pointer ">
                         <svg stroke="#fff" class="h-full w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 319.93 199">
                             <path fill="none" stroke-miterlimit="10" stroke-width="20" d="M190.22 112H214a39.49 39.49 0 0 1 39.5 39.5A39.49 39.49 0 0 1 214 191H111a39.49 39.49 0 0 1-39.5-39.5A39.49 39.49 0 0 1 111 112zM86.43 180.9H37.75A31.26 31.26 0 0 1 6.5 149.64a31.25 31.25 0 0 1 31.25-31.25h52.68M243.5 180.9h38.68a31.26 31.26 0 0 0 31.25-31.26 31.25 31.25 0 0 0-31.25-31.25H239.5"/>
@@ -68,55 +68,59 @@
                             <rect fill="none" stroke-miterlimit="10" stroke-width="20" x="212.16" y="36.1" width="62.51" height="62.51" rx="31.25"/>
                         </svg>
                     </figure>
+                {% endif %}
+                {% if usuario.is_admin or usuario.staff %}
                     <figure onclick="OpenModal('modalOpcion')" class="w-10 h-10 cursor-pointer">
                         <svg stroke="#fff" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 211.06 207">
                             <path fill="none" stroke-miterlimit="10" stroke-width="16" d="M28.38 161.81c.76-2.45 1.27-4.62 2.09-6.65q3.53-8.76 7.29-17.41a3.63 3.63 0 0 0 0-3.76 9 9 0 0 1-1.25-3c-.62-3.21-2.87-4.37-5.7-5.35-5.62-2-11.12-4.23-16.67-6.38l-.56-.23c-3.87-1.42-5.9-3.75-5.5-8.32A154 154 0 0 0 8.13 95c0-2.18.66-3.84 2.7-4.74 6.17-2.73 12.25-5.74 18.59-8 4.06-1.47 6.49-3.69 7.88-7.78a7.82 7.82 0 0 0-.3-6.41c-3-6.52-5.68-13.14-8.42-19.75-.91-2.22-.38-4 1.46-5.77 4.44-4.13 8.76-8.39 13-12.7 2-2.07 4.28-1.67 6.51-.84 6.53 2.42 13 4.85 19.49 7.5a8.75 8.75 0 0 0 6.43.3c4.47-1.34 6.88-4 8.31-8.39 1.77-5.46 4.25-10.69 6.48-16 1.29-3.07 3.34-4.61 7-4.4 5.83.33 11.69.12 17.53.06a4 4 0 0 1 4 2.27c2.53 5.24 5 10.53 7.4 15.82 1 2.13 1.92 4.28 2.73 6.48a4.48 4.48 0 0 0 2.24 2.26c5 3.12 9.58 2.32 14.6-.23s10.62-4.37 16-6.52c2.41-1 4.33-.36 6.15 1.48 4 4 7.94 8.08 12.17 11.82 2.43 2.16 2.82 4.34 1.69 7.13-2.81 6.94-5.57 13.9-8.42 20.83a5.45 5.45 0 0 0 0 3.59c1.24 5.72 5.14 8.07 10.36 9.64s10.09 3.9 15.12 5.91c3.11 1.24 4.48 3.31 4.27 6.85A144 144 0 0 0 203 111a6.13 6.13 0 0 1-4.07 6.61c-5.09 2.21-10.21 4.38-15.32 6.57l-.38.13c-7.41 2.95-7.43 2.94-10.19 10.54a3.32 3.32 0 0 0 .27 2.21c2.66 6.06 5.38 12.1 8.08 18.15.06.12.13.24.18.36 2.28 5.86 2.19 6.29-2.32 10.68-3.43 3.34-7 6.53-10.23 10.05a6.21 6.21 0 0 1-7.58 1.77c-6.81-2.62-13.64-5.19-20.41-7.9a6.92 6.92 0 0 0-4.73-.12c-4.93 1.27-7.63 4.13-9.14 9-1.66 5.41-4.28 10.53-6.46 15.78-1.22 2.93-3.14 4.3-6.53 4.13-5.58-.28-11.2-.25-16.78 0a5.71 5.71 0 0 1-6-3.72c-1.89-4.06-3.8-8.12-5.62-12.21-1.32-3-2.51-6.05-3.76-9.08-.15-.37-.25-.92-.53-1.05-1.94-.88-4-1.57-5.89-2.52s-3.78-.75-5.85.14c-6.81 2.94-13.74 5.61-20.61 8.4-2.3.93-4.09.27-5.79-1.3-4.38-4.38-8.86-8.65-13.24-13a14.4 14.4 0 0 1-1.72-2.68Zm77.32-91c-18.4.07-33.47 14.18-33.53 32.59-.07 19 15.25 32.7 33 32.93 18.32.23 33.65-13.87 33.83-32.46S124.06 71 105.7 71"/>
                         </svg>                      
                     </figure>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </nav>
     </header>
 
-    <div class="fixed inset-0 hidden text-white z-99" id="modalOpcion">
-        <div class="w-screen h-screen bg-black/30 flex items-center justify-center">
-    
-            <div class="bg-blue-900 w-[22rem] h-[30rem] rounded-md flex flex-col items-center justify-around gap-5 p-10">
-                
-                <div class="flex flex-col gap-3">
+    {% if usuario.is_admin or usuario.staff %}
+        <div class="fixed inset-0 hidden text-white z-99" id="modalOpcion">
+            <div class="w-screen h-screen bg-black/30 flex items-center justify-center">
+        
+                <div class="bg-blue-900 w-[22rem] h-[30rem] rounded-md flex flex-col items-center justify-around gap-5 p-10">
+                    
+                    <div class="flex flex-col gap-3">
 
-                    <h2 class="font-bold text-2xl">Opciones Proyecto</h2>
+                        <h2 class="font-bold text-2xl">Opciones Proyecto</h2>
 
-                    {% if avisoOpcion %}
-    
-                        <span class="font-bold text-red-500">{{ avisoOpcion }}</span>
-                        
-                    {% endif %}
+                        {% if avisoOpcion %}
+        
+                            <span class="font-bold text-red-500">{{ avisoOpcion }}</span>
+                            
+                        {% endif %}
 
+                    </div>
+
+                    <form method="post" class="flex flex-col items-center justify-center gap-4 w-full">
+
+                        {% csrf_token %}
+
+                        <input class="hidden" type="hidden" name='tipoPost' value='actualizarNombreProyecto' >
+
+                        <label class="flex flex-col font-semibold text-lg gap-3 w-full">
+                            Nombre del Proyecto
+                            <input required name="NombreProyecto" value="{{ Proyecto.nombre }}" class="inputStyle" type="text">
+                        </label>
+
+                        <button class="botonStyle">Actualizar</button>
+                    </form>
+
+                    <div class="flex flex-col items-center justify-center gap-3">
+                        <a href="{% url 'EliminarProyecto' id_proyecto %}" class="botonStyle bg-red-500 text-center" >Eliminar</a>
+                        <button class="botonStyle" onclick="CloseModal('modalOpcion')">Close</button>
+                    </div>
                 </div>
-
-                <form method="post" class="flex flex-col items-center justify-center gap-4 w-full">
-
-                    {% csrf_token %}
-
-                    <input class="hidden" type="hidden" name='tipoPost' value='actualizarNombreProyecto' >
-
-                    <label class="flex flex-col font-semibold text-lg gap-3 w-full">
-                        Nombre del Proyecto
-                        <input required name="NombreProyecto" value="{{ Proyecto.nombre }}" class="inputStyle" type="text">
-                    </label>
-
-                    <button class="botonStyle">Actualizar</button>
-                </form>
-
-                <div class="flex flex-col items-center justify-center gap-3">
-                    <a href="{% url 'EliminarProyecto' id_proyecto %}" class="botonStyle bg-red-500 text-center" >Eliminar</a>
-                    <button class="botonStyle" onclick="CloseModal('modalOpcion')">Close</button>
-                </div>
+        
             </div>
-    
         </div>
-    </div>
+    {% endif %}
     
     {% if usuario.is_admin %}
         <div class="fixed inset-0 hidden text-white z-99" id="modalMiembros">
@@ -132,12 +136,13 @@
                                 <p class="w-full">{{miembro.usuario.correo}}</p>
                                 
                                 {% if usuario.is_admin and usuario.usuario.correo != miembro.usuario.correo %}
-                                
+
                                     <a href="{% url "EliminarMiembro" miembro.pk id_proyecto %}" class="w-full cursor-pointer">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="fill-white" viewBox="0 0 24 24">
                                             <path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7zm4 12H8v-9h2zm6 0h-2v-9h2zm.618-15L15 2H9L7.382 4H3v2h18V4z"/>
                                         </svg>   
                                     </a>
+
                                 {% endif %}
     
                             </article>

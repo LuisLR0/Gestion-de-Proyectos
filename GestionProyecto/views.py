@@ -173,7 +173,15 @@ def TableroProyecto (request, id_proyecto):
     
     miembros = miembros_proyecto.objects.filter(id_proyecto=id_proyecto)
     CategoriasProyecto = categorias_proyecto.objects.filter(id_proyecto=id_proyecto).order_by('indice')
-    tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto)
+    
+    ordenPrioridad = Case(
+        When(id_tarea__prioridad='ALTA', then=1),
+        When(id_tarea__prioridad='MEDIA', then=2),
+        When(id_tarea__prioridad='BAJA', then=3)
+    )
+    
+    tareas = tareas_proyecto.objects.filter(id_proyecto=id_proyecto).order_by(ordenPrioridad)
+        
     proyectoDB = Proyectos.objects.get(pk=id_proyecto)
     
     miembroAdmin = None
@@ -185,8 +193,18 @@ def TableroProyecto (request, id_proyecto):
         except:
             return redirect('Inicio')
     else:
+        
+        miembro = False
+        
+        try:
+            miembro = miembroAdmin = miembros_proyecto.objects.get(id_proyecto=id_proyecto, usuario=request.user)
+        except:
+            pass
+        
         miembroAdmin = {
-            'is_admin': True
+            'is_admin': miembro.is_admin if miembro else False,
+            'staff': True,
+            'usuario': miembro.usuario if miembro else None,
         }
     
     if request.method == "POST":

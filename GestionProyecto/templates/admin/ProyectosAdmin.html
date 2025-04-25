@@ -5,11 +5,11 @@
 <h2 class="text-center text-2xl font-bold">Proyectos</h2>
 
 
-<article class="grid my-5 gap-15 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+<article class="grid my-5 gap-15 md:grid-cols-2 lg:grid-cols-3">
     
     {% for proyecto in proyectos %}
     
-    <div class="bg-blue-800 w-full h-max rounded-2xl p-5">
+        <div class="bg-blue-800 w-full min-w-[17rem] h-max rounded-2xl p-5">
             <h4 class="text-xl font-bold mb-5">{{ proyecto.id_proyecto.nombre }}</h4>
             
 
